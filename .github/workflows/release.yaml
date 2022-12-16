@@ -18,27 +18,23 @@ jobs:
         run: |
           timestamp=$(date +%Y%m%d%H%M%S)
           version=$(echo "$timestamp" | sed -E 's/(.*)/v\1/')
-          echo "::set-env name=IMAGE_NAME::cherryswap/v:$version"
-
-      - name: Prefix image name
-        run: |
           prefix="dev-"
           if [ "$GITHUB_REF" == "refs/heads/master" ]; then
             prefix="prod-"
           fi
-          echo "::set-env name=IMAGE_NAME::$prefix$VERSION"
+          echo "IMAGE_NAME=${prefix}cherryswap/v:$version" >> $GITHUB_ENV
 
       - name: Build images
-        run: docker build -t $IMAGE_NAME .
+        run: docker build -t ${{ env.IMAGE_NAME }} .
 
       - name: Save image to tar
-        run: docker save $IMAGE_NAME -o "${IMAGE_NAME}.tar"
+        run: docker save ${{ env.IMAGE_NAME }} -o "${{ env.IMAGE_NAME }}.tar"
 
       - name: Upload tar file
         uses: actions/upload-artifact@v2
         with:
-          name: '${IMAGE_NAME}.tar'
-          path: '${IMAGE_NAME}.tar'
+          name: '${{ env.IMAGE_NAME }}.tar'
+          path: '${{ env.IMAGE_NAME }}.tar'
 
       - name: Connect to server via SSH
         uses: appleboy/ssh-action@v0.1.6
@@ -50,5 +46,5 @@ jobs:
       - name: Download tar file
         uses: actions/download-artifact@v2
         with:
-          name: '${IMAGE_NAME}.tar'
-          path: ~/images/"${IMAGE_NAME}.tar"
+          name: '${{ env.IMAGE_NAME }}.tar'
+          path: ~/images/"${{ env.IMAGE_NAME }}.tar"
