@@ -14,38 +14,31 @@ jobs:
       - name: Check repo
         uses: actions/checkout@v2
 
-      - name: Build image
-        run: ./.ci/build-image.sh -p
-        if: github.ref == 'refs/heads/master'
-
-      - name: Build image
-        run: ./.ci/build-image.sh
-        if: github.ref == 'refs/heads/develop'
-
-      - name: Commit version changes
-        uses: EndBug/add-and-commit@v9
-        with:
-          author_name: Github Workflow
-          author_email: ci@cherryblossomswap.com
-          message: 'ci(): bump version [skip actions]'
-
-      - name: Read package.json
-        uses: martinbeentjes/npm-get-version-action@master
-        with:
-          path: .
-        id: packageJson
-
       - name: Set image name variable
-        run: echo "::set-env name=IMAGE_NAME::cherryswap/v:${{ steps.packageJson.outputs.version }}"
+        run: |
+          timestamp=$(date +%Y%m%d%H%M%S)
+          version=$(echo "$timestamp" | sed -E 's/(.*)/v\1/')
+          echo "::set-env name=IMAGE_NAME::cherryswap/v:$version"
+
+      - name: Prefix image name
+        run: |
+          prefix="dev-"
+          if [ "$GITHUB_REF" == "refs/heads/master" ]; then
+            prefix="prod-"
+          fi
+          echo "::set-env name=IMAGE_NAME::$prefix$VERSION"
+
+      - name: Build images
+        run: docker build -t $IMAGE_NAME .
 
       - name: Save image to tar
-        run: docker save ${{ env.IMAGE_NAME }} -o ${{ env.IMAGE_NAME }}.tar
+        run: docker save $IMAGE_NAME -o "${IMAGE_NAME}.tar"
 
       - name: Upload tar file
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.IMAGE_NAME }}.tar
-          path: ${{ env.IMAGE_NAME }}.tar
+          name: '${IMAGE_NAME}.tar'
+          path: '${IMAGE_NAME}.tar'
 
       - name: Connect to server via SSH
         uses: appleboy/ssh-action@v0.1.6
@@ -57,5 +50,5 @@ jobs:
       - name: Download tar file
         uses: actions/download-artifact@v2
         with:
-          name: ${{ env.IMAGE_NAME }}.tar
-          path: ~/images/${{ env.IMAGE_NAME }}.tar
+          name: '${IMAGE_NAME}.tar'
+          path: ~/images/"${IMAGE_NAME}.tar"
