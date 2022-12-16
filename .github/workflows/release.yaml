@@ -40,7 +40,7 @@ jobs:
         uses: garygrossgarten/github-action-scp@release
         with:
           local: '${{ env.IMAGE_NAME }}.tar'
-          remote: '~/images/${{ env.IMAGE_NAME }}.tar'
+          remote: 'images/${{ env.IMAGE_NAME }}.tar'
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
@@ -51,3 +51,19 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            if [ "$GITHUB_REF" == "refs/heads/master" ]; then
+              docker stop production || true
+              docker rm production || true
+            elif [ "$GITHUB_REF" == "refs/heads/develop" ]; then
+              docker stop staging || true
+              docker rm staging || true
+            fi
+
+            docker load -i images/${{ env.IMAGE_NAME }}.tar
+
+            if [ "$GITHUB_REF" == "refs/heads/master" ]; then
+              docker run --name production -d -p 80:3000 ${{ env.IMAGE_NAME }}
+            elif [ "$GITHUB_REF" == "refs/heads/develop" ]; then
+              docker run --name staging -d -p 1243:3000 ${{ env.IMAGE_NAME }}
+            fi
