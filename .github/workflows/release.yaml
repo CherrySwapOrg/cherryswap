@@ -57,7 +57,7 @@ jobs:
             docker rm production || true
 
             docker load -i images/${{ env.IMAGE_NAME }}.tar
-            docker run --name production -d -p 80:3000 ${{ env.IMAGE_NAME }}
+            docker run --name production -d -p 3000:3000 ${{ env.IMAGE_NAME }}
 
       - name: Connect to server via SSH
         uses: appleboy/ssh-action@v0.1.6
