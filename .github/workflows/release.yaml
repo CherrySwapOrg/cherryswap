@@ -43,7 +43,7 @@ jobs:
           remote: 'images/${{ env.IMAGE_NAME }}.tar'
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Connect to server via SSH
         uses: appleboy/ssh-action@v0.1.6
