@@ -22,7 +22,7 @@ jobs:
           if [ "$GITHUB_REF" == "refs/heads/master" ]; then
             prefix="prod-"
           fi
-          echo "IMAGE_NAME=${prefix}cherryswap/v:$version" >> $GITHUB_ENV
+          echo "IMAGE_NAME=${prefix}cherryswap:$version" >> $GITHUB_ENV
 
       - name: Build images
         run: docker build -t ${{ env.IMAGE_NAME }} .
