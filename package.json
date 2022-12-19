@@ -14,12 +14,18 @@
     "@emotion/babel-plugin": "^11.10.2",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@evercodelab/hmac-auth": "^1.2.1",
+    "@next/font": "^13.0.6",
     "@reduxjs/toolkit": "^1.8.6",
     "axios": "^1.1.3",
-    "next": "^12.3.1",
+    "dayjs": "^1.11.7",
+    "next": "^13.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.0.4"
+    "react-qr-code": "^2.0.11",
+    "react-qr-reader": "^3.0.0-beta-1",
+    "react-redux": "^8.0.4",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@eclab/eslint-config": "1.1.0",
