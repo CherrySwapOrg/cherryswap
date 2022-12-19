@@ -2,7 +2,7 @@ import { createSelector } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
 
 import type { AppState } from 'app/store'
-import { FlowType } from 'pages/exchange/types'
+import { FlowType } from 'types/exchange'
 
 export const selectExchangeAmounts = createSelector(
   (state: AppState) => state.calculator,

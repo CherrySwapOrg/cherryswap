@@ -17,7 +17,7 @@ import ExchangeStatus from 'pages/exchange/components/exchange-status'
 import InfoStep from 'pages/exchange/components/info-step'
 import MobileSteps from 'pages/exchange/components/mobile-steps'
 import Steps from 'pages/exchange/components/steps'
-import { Step } from 'pages/exchange/types'
+import { Step } from 'types/exchange'
 
 const StepperWrapper = styled.div`
   ${mainContainer};

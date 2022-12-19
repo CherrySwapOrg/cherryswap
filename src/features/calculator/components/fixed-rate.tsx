@@ -8,7 +8,7 @@ import { setFlow } from 'features/calculator/calculator-slice'
 import { selectCalculatorUiState, selectIsFixedRate } from 'features/calculator/selectors'
 import { fetchEstimationAmount } from 'features/calculator/thunks'
 import useFixedRateTimer from 'hooks/use-fixed-rate-timer'
-import { FlowType } from 'pages/exchange/types'
+import { FlowType } from 'types/exchange'
 
 const Wrapper = styled.div`
   display: flex;

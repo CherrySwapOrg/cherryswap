@@ -30,7 +30,7 @@ import {
 import { fetchEstimationAmount, initCalculator } from 'features/calculator/thunks'
 import { BREAKPOINTS } from 'helpers/constants'
 import validateNumericString from 'helpers/validate-numeric-string'
-import { ExchangeType } from 'pages/exchange/types'
+import { ExchangeType } from 'types/exchange'
 
 const LoaderWrapper = styled.div`
   display: flex;

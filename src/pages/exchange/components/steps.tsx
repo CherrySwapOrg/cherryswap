@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from 'react'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 
-import { Step } from 'pages/exchange/types'
+import { Step } from 'types/exchange'
 
 const StepsWrapper = styled.div`
   display: flex;
