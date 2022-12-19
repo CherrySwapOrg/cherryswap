@@ -14,7 +14,6 @@
     "@emotion/babel-plugin": "^11.10.2",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
-    "@evercodelab/hmac-auth": "^1.2.1",
     "@next/font": "^13.0.6",
     "@reduxjs/toolkit": "^1.8.6",
     "axios": "^1.1.3",
