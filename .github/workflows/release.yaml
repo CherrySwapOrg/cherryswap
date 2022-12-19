@@ -25,7 +25,7 @@ jobs:
           echo "IMAGE_NAME=${prefix}cherryswap_$version" >> $GITHUB_ENV
 
       - name: Build images
-        run: docker build -t ${{ env.IMAGE_NAME }} .
+        run: docker build -t ${{ env.IMAGE_NAME }} --build-arg CHANGE_NOW_API_KEY=${{ secrets.CHANGE_NOW_API_KEY }} --build-arg CHANGE_NOW_API_URL=${{ secrets.CHANGE_NOW_API_URL }} --build-arg CHANGE_NOW_EXCHANGE_STATUS_API=${{ secrets.CHANGE_NOW_EXCHANGE_STATUS_API }} --build-arg NEXT_PUBLIC_CONTENT_API_URL=${{ secrets.NEXT_PUBLIC_CONTENT_API_URL }} .
 
       - name: Save image to tar
         run: docker save ${{ env.IMAGE_NAME }} -o "${{ env.IMAGE_NAME }}.tar"
