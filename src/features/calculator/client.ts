@@ -8,7 +8,7 @@ import {
   GetEstimatedAmountResponse,
 } from 'features/calculator/types'
 import { ChangeNowExchange } from 'features/exchange-status/types'
-import { ExchangeType, FlowType } from 'pages/exchange/types'
+import { ExchangeType, FlowType } from 'types/exchange'
 
 const contentApiClient = axios.create({
   baseURL: EnvironmentConfig.contentApiUrl,

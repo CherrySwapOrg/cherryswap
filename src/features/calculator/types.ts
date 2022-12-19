@@ -1,4 +1,4 @@
-import { ExchangeType, FlowType } from 'pages/exchange/types'
+import { ExchangeType, FlowType } from 'types/exchange'
 
 export interface CurrencyInfo {
   id: string

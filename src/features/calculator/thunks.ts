@@ -11,7 +11,7 @@ import {
 import { CurrencyInfo, GetEstimatedAmountResponse } from 'features/calculator/types'
 import createDebouncedAsyncThunk from 'features/create-debounced-async-thunk'
 import { setExchangeInfo } from 'features/exchange-status/exchange-status-slice'
-import { ExchangeType, FlowType } from 'pages/exchange/types'
+import { ExchangeType, FlowType } from 'types/exchange'
 
 export const getCurrencyInfo = createAsyncThunk<{ currenciesInfo: Record<string, CurrencyInfo> }>(
   'calculator/getCurrencyInfo',

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { fetchEstimationAmount, getCurrencyInfo } from 'features/calculator/thunks'
 import { CalculatorSlice } from 'features/calculator/types'
-import { ExchangeType, FlowType } from 'pages/exchange/types'
+import { ExchangeType, FlowType } from 'types/exchange'
 
 const initialState: CalculatorSlice = {
   currencies: {
