@@ -5,6 +5,12 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 FROM node:16-alpine as builder
+
+ENV NEXT_PUBLIC_CONTENT_API_URL=$NEXT_PUBLIC_CONTENT_API_URL
+ENV CHANGE_NOW_API_URL=$CHANGE_NOW_API_URL
+ENV CHANGE_NOW_API_KEY=$CHANGE_NOW_API_KEY
+ENV CHANGE_NOW_EXCHANGE_STATUS_API=$CHANGE_NOW_EXCHANGE_STATUS_API
+
 WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
