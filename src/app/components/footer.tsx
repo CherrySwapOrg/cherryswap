@@ -201,7 +201,7 @@ const Footer: React.FC = () => (
           <NavigationHeader>Cherry swap</NavigationHeader>
           <NavigationLink href='/about'>About us</NavigationLink>
           <NavigationLink href='/contact-us'>Contact us</NavigationLink>
-          <NavigationLink href='/'>Terms of Use</NavigationLink>
+          <NavigationLink href='/terms-of-use'>Terms of Use</NavigationLink>
           <NavigationLink href='/privacy-policy'>Privacy Policy</NavigationLink>
         </InnerColumn>
         <InnerColumn>

@@ -6,6 +6,7 @@ import { NextPage } from 'next'
 import Footer from 'app/components/footer'
 import Header from 'app/components/header'
 import InfoPageLayout from 'app/components/info-page-layout'
+import UlList from 'app/components/list'
 
 const SubTitle = styled.h2`
   font-size: 24px;
@@ -16,27 +17,6 @@ const SubTitle = styled.h2`
 const Text = styled.div`
   font-size: 14px;
   margin-bottom: 12px;
-`
-
-const List = styled.ul`
-  li {
-    margin-bottom: 12px;
-    font-size: 12px;
-    padding-left: 12px;
-    position: relative;
-  }
-
-  li:before {
-    content: '';
-    position: absolute;
-    top: 7px;
-    left: 0;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    border: 1px solid ${({ theme }): string => theme.colors.border.primaryOnDark};
-    background-color: red;
-  }
 `
 
 const PrivacyPolicyPage: NextPage = () => (
@@ -50,7 +30,7 @@ const PrivacyPolicyPage: NextPage = () => (
         maintain user accounts and do not collect and store personal data, such as your name or internet protocol (“IP”)
         address. When you interact with the Services, we collect only:
       </Text>
-      <List>
+      <UlList>
         <li>
           Publicly-available blockchain data. When you connect your non-custodial blockchain wallet to the Services, we
           collect and log your publicly-available blockchain address to learn more about your use of the Services and to
@@ -88,10 +68,10 @@ const PrivacyPolicyPage: NextPage = () => (
           customer support, social media, or another support channel (such as Twitter or Discord), or when you
           participate in any surveys or questionnaires.
         </li>
-      </List>
+      </UlList>
       <SubTitle>How We Share Data</SubTitle>
       <Text>We may share or disclose the data we collect:</Text>
-      <List>
+      <UlList>
         <li>
           With service providers. We may share your information with our service providers and vendors to assist us in
           providing, delivering, and improving the Services. For example, we may share your wallet address with service
@@ -118,7 +98,7 @@ const PrivacyPolicyPage: NextPage = () => (
         <li>
           With your consent. We may share your information any other time you provide us with your consent to do so.
         </li>
-      </List>
+      </UlList>
       <Text>We do not share your information with any third parties for any marketing purposes whatsoever.</Text>
       <SubTitle>Security</SubTitle>
       <Text>
