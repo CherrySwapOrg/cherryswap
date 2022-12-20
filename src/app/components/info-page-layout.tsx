@@ -6,6 +6,7 @@ const Wrapper = styled.div``
 
 const ChildrenWrapper = styled.div`
   max-width: 700px;
+  padding: 50px 0;
   margin: 0 auto;
 `
 

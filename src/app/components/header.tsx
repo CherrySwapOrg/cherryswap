@@ -103,7 +103,7 @@ const Header: React.FC = () => {
       </DrawerMenuButton>
       <MobileMenu isOpened={isOpened}>
         <LinksWrapper>
-          <NavigationLink href='/' isFirst>
+          <NavigationLink href='/about' isFirst>
             About
           </NavigationLink>
           <NavigationLink href='/'>Contact us</NavigationLink>
