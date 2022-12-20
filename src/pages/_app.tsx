@@ -4,6 +4,7 @@ import 'lib/dayjs'
 import { css, ThemeProvider, Global } from '@emotion/react'
 import { Plus_Jakarta_Sans } from '@next/font/google'
 import type { AppProps } from 'next/app'
+import Head from 'next/head'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
@@ -54,6 +55,13 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => (
             }
           `}
         />
+        <Head>
+          <title>Cherry Swap - Instant Crypto Exchanges</title>
+          <meta
+            name='description'
+            content='Fast and unlimited swaps between 500+ cryptocurrencies. Fully non-custodial.'
+          />
+        </Head>
         <Component {...pageProps} />
       </PersistGate>
     </Provider>
