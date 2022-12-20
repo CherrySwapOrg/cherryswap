@@ -106,7 +106,7 @@ const Header: React.FC = () => {
           <NavigationLink href='/about' isFirst>
             About
           </NavigationLink>
-          <NavigationLink href='/'>Contact us</NavigationLink>
+          <NavigationLink href='/contact-us'>Contact us</NavigationLink>
         </LinksWrapper>
       </MobileMenu>
     </Wrapper>
