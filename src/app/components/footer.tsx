@@ -202,7 +202,7 @@ const Footer: React.FC = () => (
           <NavigationLink href='/about'>About us</NavigationLink>
           <NavigationLink href='/contact-us'>Contact us</NavigationLink>
           <NavigationLink href='/'>Terms of Use</NavigationLink>
-          <NavigationLink href='/'>Privacy Policy</NavigationLink>
+          <NavigationLink href='/privacy-policy'>Privacy Policy</NavigationLink>
         </InnerColumn>
         <InnerColumn>
           <NavigationHeader>Support</NavigationHeader>

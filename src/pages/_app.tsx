@@ -23,30 +23,10 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => (
             *::before,
             *::after {
               box-sizing: border-box;
-            }
-
-            /* Remove default padding */
-            ul[class],
-            ol[class] {
-              padding: 0;
-            }
-
-            /* Remove default margin */
-            body,
-            h1,
-            h2,
-            h3,
-            h4,
-            p,
-            ul[class],
-            ol[class],
-            li,
-            figure,
-            figcaption,
-            blockquote,
-            dl,
-            dd {
+              text-decoration: none;
+              list-style: none;
               margin: 0;
+              padding: 0;
             }
 
             /* Set core body defaults */
