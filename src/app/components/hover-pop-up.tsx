@@ -14,7 +14,7 @@ const Arrow = styled.div`
   height: 36px;
   position: relative;
   z-index: 6;
-  background: #ffffff;
+  background: ${({ theme }): string => theme.colors.background.light};
   transform: rotate(45deg);
 `
 
@@ -25,9 +25,9 @@ const Content = styled.div`
   left: -110px;
   bottom: 18px;
   padding: 30px;
-  background: #ffffff;
+  background: ${({ theme }): string => theme.colors.background.light};
   border-radius: 20px;
-  box-shadow: 10px 16px 74px rgba(156, 46, 73, 0.2);
+  box-shadow: ${({ theme }): string => theme.boxShadow.primary};
 `
 
 const Title = styled.h5`
