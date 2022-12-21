@@ -24,14 +24,16 @@ const PageBackground = styled.div`
 
 const MainPageWrapper = styled.section`
   ${mainContainer};
+  min-height: calc(100vh - 100px);
   align-items: center;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   line-height: 1.2;
-  padding: 150px 0;
+  padding: 50px 0 150px;
 
   @media (max-width: ${BREAKPOINTS.tablet}) {
+    min-height: 0;
     padding: 40px 0;
     gap: 40px;
     flex-direction: column;
@@ -55,10 +57,10 @@ const IndexPage: NextPage = () => (
     <PageBackground>
       <MainPageWrapper>
         <PageDescriptionWrapper>
-          <PageLargeTitle title='Exchange Cryptocurrency Instantly' label='Velit officia' />
+          <PageLargeTitle title='Exchange Cryptocurrency Instantly' label='Best Rates' />
           <PageDescriptionText
             text='Instant and unlimited exchange between 500+ assets in the world of cryptocurrencies.
-Enjoy fast swaps on a non-custodial exchange platform.'
+Enjoy fast swaps on a non&#8209;custodial exchange platform.'
           />
         </PageDescriptionWrapper>
         <CalculatorForm />

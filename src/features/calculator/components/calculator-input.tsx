@@ -31,6 +31,7 @@ const Title = styled.span`
   color: ${({ theme }): string => theme.colors.text.dark};
   font-size: 14px;
   font-weight: 500;
+  line-height: 17px;
   opacity: 0.5;
 
   @media (max-width: ${BREAKPOINTS.mobile}) {
@@ -64,7 +65,7 @@ const CurrencyWrapper = styled.div`
 `
 
 const LoaderWrapper = styled.div`
-  padding: 15px 0;
+  padding: 10px 0;
 `
 
 interface Props {

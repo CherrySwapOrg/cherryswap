@@ -59,6 +59,7 @@ const UppercaseText = styled.span<{ isPrimary?: boolean }>`
   color: ${({ theme, isPrimary }): string => (isPrimary ? theme.colors.primary : theme.colors.text.dark)};
   font-weight: ${({ isPrimary }): number => (isPrimary ? 700 : 500)};
   text-transform: uppercase;
+  align-self: center;
 `
 
 const InfoText = styled.span`
@@ -74,6 +75,7 @@ const InfoText = styled.span`
 
 const OpacityText = styled.span`
   opacity: 0.5;
+  align-self: center;
 `
 
 const openedList = css`
@@ -262,7 +264,11 @@ const Calculator: React.FC = () => {
           <InfoText>
             <OpacityText>Estimated rate:</OpacityText>{' '}
             <UppercaseText isPrimary={isFixedRate}>
-              1 {fromCurrencyInfo?.ticker} ~ {estimatedRate} {toCurrencyInfo?.ticker}
+              {isLoadingToInput || isLoadingFromInput ? (
+                <Loader size='16px' />
+              ) : (
+                `1 ${fromCurrencyInfo?.ticker} ~ ${estimatedRate} ${toCurrencyInfo?.ticker}`
+              )}
             </UppercaseText>
             <FixedRate />
           </InfoText>
