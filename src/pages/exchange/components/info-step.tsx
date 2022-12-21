@@ -291,7 +291,7 @@ const InfoStep: React.FC<Props> = ({ onNextPress }) => {
           <InputWithIcon
             value={toAddress}
             onChange={handleChangeToAddress}
-            iconUrl={!toAddress || isErrorAddress ? '/icons/qr-icon.svg' : '/icons/checkmark-icon.svg'}
+            isAddressValid={Boolean(toAddress && !isErrorAddress)}
             errorMessage={`Please enter a valid ${toCurrencyInfo?.ticker?.toUpperCase()} payout address`}
             placeholder={`Enter the ${toCurrencyInfo?.ticker?.toUpperCase()} wallet address`}
             iconSize={30}
@@ -311,7 +311,7 @@ const InfoStep: React.FC<Props> = ({ onNextPress }) => {
             <InputWithIcon
               value={refundAddress}
               onChange={handleChangeRefundAddress}
-              iconUrl={!refundAddress || isErrorRefundAddress ? '/icons/qr-icon.svg' : '/icons/checkmark-icon.svg'}
+              isAddressValid={Boolean(refundAddress && !isErrorRefundAddress)}
               errorMessage={`Please enter a valid ${fromCurrencyInfo?.ticker?.toUpperCase()} address`}
               placeholder={`Enter ${fromCurrencyInfo?.ticker?.toUpperCase()} refund address`}
               iconSize={30}
