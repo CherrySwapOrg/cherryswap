@@ -16,10 +16,7 @@ const AboutPage: NextPage = () => (
   <>
     <Header />
     <PageBackground>
-      <InfoPageLayout
-        heading='About Us'
-        description='Vivamus in tincidunt elit. Sed id elementum erat. Pellentesque vel dui porta, sagittis velit in, pretium nunc. Donec viverra vel ipsum a maximus. Donec nibh ex, lobortis in.'
-      >
+      <InfoPageLayout heading='About Us'>
         <Text>
           CherrySwap is a fast growing service that offers users fast and profitable exchanges. The success of the work
           is based on the prompt work of specialists, a user-friendly interface, and mutually beneficial courses. Every

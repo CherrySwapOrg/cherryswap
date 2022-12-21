@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 
+import ClickOutsideWrapper from 'app/components/click-outside-wrapper'
 import HoverPopUp from 'app/components/hover-pop-up'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { setFlow } from 'features/calculator/calculator-slice'
@@ -54,7 +55,7 @@ const FixedRate: React.FC = () => {
   }, [isFixedRate, dispatch])
 
   return (
-    <Wrapper onMouseEnter={() => setIsShowPopUp(true)} onMouseLeave={() => setIsShowPopUp(false)}>
+    <Wrapper onMouseEnter={(): void => setIsShowPopUp(true)} onMouseLeave={(): void => setIsShowPopUp(false)}>
       {isFixedRate ? (
         <InnerWrapper>
           <WrapperPressedImage onClick={handleFixedRatePress}>
@@ -77,10 +78,12 @@ const FixedRate: React.FC = () => {
         </WrapperPressedImage>
       )}
       {isShowPopUp && (
-        <HoverPopUp
-          title='Fixed Rate Mode'
-          text='If mode on: the is completed regardless of the rate fluctuations. Cherry Swap guarantees you will  receive the agreed amount.'
-        />
+        <ClickOutsideWrapper setIsOpen={setIsShowPopUp}>
+          <HoverPopUp
+            title='Fixed Rate Mode'
+            text='If mode on: the is completed regardless of the rate fluctuations. Cherry Swap guarantees you will  receive the agreed amount.'
+          />
+        </ClickOutsideWrapper>
       )}
     </Wrapper>
   )
