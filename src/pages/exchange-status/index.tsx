@@ -11,7 +11,7 @@ import PageBackground from 'app/components/page-background'
 import StepperHeading from 'app/components/stepper-heading'
 import { inputStyle } from 'app/styles/input-style'
 import mainContainer from 'app/styles/main-container'
-import { EXCHANGE_ID_REGEX } from 'helpers/constants'
+import { BREAKPOINTS, EXCHANGE_ID_REGEX } from 'helpers/constants'
 
 const Wrapper = styled.div`
   ${mainContainer};
@@ -32,6 +32,10 @@ const StatusForm = styled.div`
   max-width: 700px;
   padding: 44px 75px;
   width: 100%;
+
+  @media (max-width: ${BREAKPOINTS.mobile}) {
+    padding: 10px 20px;
+  }
 `
 
 const InputWrapper = styled.input`

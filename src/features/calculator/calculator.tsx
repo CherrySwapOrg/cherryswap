@@ -50,6 +50,10 @@ const InfoWrapper = styled.div`
   min-height: 60px;
 `
 
+const Row = styled.div`
+  display: flex;
+`
+
 const InfoInnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -77,6 +81,10 @@ const InfoText = styled.span`
 const OpacityText = styled.span`
   opacity: 0.5;
   align-self: center;
+
+  @media (max-width: ${BREAKPOINTS.mobile}) {
+    align-self: auto;
+  }
 `
 
 const openedList = css`
@@ -266,15 +274,17 @@ const Calculator: React.FC = () => {
             <OpacityText>No extra fees</OpacityText>
           </InfoText>
           <InfoText>
-            <OpacityText>Estimated rate:</OpacityText>{' '}
-            <UppercaseText isPrimary={isFixedRate}>
-              {isLoadingToInput || isLoadingFromInput ? (
-                <Loader size='16px' />
-              ) : (
-                `1 ${fromCurrencyInfo?.ticker} ~ ${estimatedRate} ${toCurrencyInfo?.ticker}`
-              )}
-            </UppercaseText>
-            <FixedRate />
+            <OpacityText>Estimated rate:</OpacityText>
+            <Row>
+              <UppercaseText isPrimary={isFixedRate}>
+                {isLoadingToInput || isLoadingFromInput ? (
+                  <Loader size='16px' />
+                ) : (
+                  `1 ${fromCurrencyInfo?.ticker} ~ ${estimatedRate} ${toCurrencyInfo?.ticker}`
+                )}
+              </UppercaseText>
+              <FixedRate />
+            </Row>
           </InfoText>
         </InfoInnerWrapper>
         <SwapButton />
