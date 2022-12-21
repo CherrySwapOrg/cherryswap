@@ -99,6 +99,7 @@ const CurrencySelectWrapper = styled.div<{ isOpened: boolean }>`
   width: 85%;
   z-index: 5;
   ${({ isOpened }): SerializedStyles => (isOpened ? openedList : closedList)}
+  box-shadow: ${({ theme }): string => theme.boxShadow.primary};
 `
 
 const InputWrapper = styled.div`

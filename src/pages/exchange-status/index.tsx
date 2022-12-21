@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Footer from 'app/components/footer'
 import Header from 'app/components/header'
 import Link from 'app/components/link'
+import PageBackground from 'app/components/page-background'
 import StepperHeading from 'app/components/stepper-heading'
 import { inputStyle } from 'app/styles/input-style'
 import mainContainer from 'app/styles/main-container'
@@ -66,14 +67,16 @@ const ExchangeStatusPage: NextPage = () => {
   return (
     <>
       <Header />
-      <Wrapper>
-        <StatusForm>
-          <Image width={150} height={150} src='/images/exchange-status.svg' alt='Check exchange status' />
-          <StepperHeading title='Check your transaction status' />
-          <InputWrapper value={exchangeId} onChange={handleInputChange} placeholder='Enter Transaction ID' />
-          <CheckLink href={`/exchange?id=${exchangeId}`}>Check</CheckLink>
-        </StatusForm>
-      </Wrapper>
+      <PageBackground>
+        <Wrapper>
+          <StatusForm>
+            <Image width={150} height={150} src='/images/exchange-status.svg' alt='Check exchange status' />
+            <StepperHeading title='Check your transaction status' />
+            <InputWrapper value={exchangeId} onChange={handleInputChange} placeholder='Enter Transaction ID' />
+            <CheckLink href={`/exchange?id=${exchangeId}`}>Check</CheckLink>
+          </StatusForm>
+        </Wrapper>
+      </PageBackground>
       <Footer />
     </>
   )

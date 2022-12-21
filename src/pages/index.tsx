@@ -4,23 +4,11 @@ import type { NextPage } from 'next'
 import CalculatorForm from 'app/components/calculator-form'
 import Footer from 'app/components/footer'
 import Header from 'app/components/header'
+import PageBackground from 'app/components/page-background'
 import PageDescriptionText from 'app/components/page-description-text'
 import PageLargeTitle from 'app/components/page-large-title'
 import mainContainer from 'app/styles/main-container'
 import { BREAKPOINTS } from 'helpers/constants'
-
-const PageBackground = styled.div`
-  background: url('/images/page-background.svg');
-  background-position: 0 -85%;
-
-  @media (max-width: ${BREAKPOINTS.tablet}) {
-    background-position: 0 -20%;
-  }
-
-  @media (max-width: ${BREAKPOINTS.mobileLarge}) {
-    background: none;
-  }
-`
 
 const MainPageWrapper = styled.section`
   ${mainContainer};
