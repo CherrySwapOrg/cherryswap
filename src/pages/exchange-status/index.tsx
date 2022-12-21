@@ -11,6 +11,7 @@ import PageBackground from 'app/components/page-background'
 import StepperHeading from 'app/components/stepper-heading'
 import { inputStyle } from 'app/styles/input-style'
 import mainContainer from 'app/styles/main-container'
+import { EXCHANGE_ID_REGEX } from 'helpers/constants'
 
 const Wrapper = styled.div`
   ${mainContainer};
@@ -61,6 +62,10 @@ const ExchangeStatusPage: NextPage = () => {
   const [exchangeId, setExchangeId] = useState('')
 
   const handleInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    if (event.currentTarget.value && !EXCHANGE_ID_REGEX.test(event.currentTarget.value)) {
+      return
+    }
+
     setExchangeId(event.currentTarget.value)
   }, [])
 
