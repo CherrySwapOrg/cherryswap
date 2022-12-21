@@ -3,6 +3,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 
+import ClickOutsideWrapper from 'app/components/click-outside-wrapper'
 import { BREAKPOINTS } from 'helpers/constants'
 
 const Wrapper = styled.div`
@@ -63,17 +64,19 @@ interface Props {
 }
 
 const WarningModal: React.FC<Props> = ({ onClose }) => (
-  <Wrapper>
-    <MobileClose onClick={onClose} />
-    <Heading>Please make sure you are on cherryswap.io</Heading>
-    <Description>
-      <GreenText>
-        <Image width={20} height={20} src='/icons/lock-green.svg' alt='Lock' />
-        Secure |{' '}
-      </GreenText>
-      https://cherryswap.io
-    </Description>
-  </Wrapper>
+  <ClickOutsideWrapper setIsOpen={onClose}>
+    <Wrapper>
+      <MobileClose onClick={onClose} />
+      <Heading>Please make sure you are on cherryswap.io</Heading>
+      <Description>
+        <GreenText>
+          <Image width={20} height={20} src='/icons/lock-green.svg' alt='Lock' />
+          Secure |{' '}
+        </GreenText>
+        https://cherryswap.io
+      </Description>
+    </Wrapper>
+  </ClickOutsideWrapper>
 )
 
 export default WarningModal

@@ -93,7 +93,9 @@ const Header: React.FC = () => {
 
   return (
     <Wrapper isOpened={isOpened}>
-      <Logo src={isOpened ? '/icons/dark-logo.svg' : '/icons/light-logo.svg'} />
+      <Link href='/'>
+        <Logo src={isOpened ? '/icons/dark-logo.svg' : '/icons/light-logo.svg'} />
+      </Link>
       <DrawerMenuButton onClick={toggleMenuOpened}>
         {!isOpened ? (
           <Image width={26} height={21} src='/icons/menu-icon.svg' alt='Menu' />

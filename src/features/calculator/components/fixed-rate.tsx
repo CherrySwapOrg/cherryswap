@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import styled from '@emotion/styled'
 import Image from 'next/image'
 
+import HoverPopUp from 'app/components/hover-pop-up'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { setFlow } from 'features/calculator/calculator-slice'
 import { selectCalculatorUiState, selectIsFixedRate } from 'features/calculator/selectors'
@@ -11,7 +12,16 @@ import useFixedRateTimer from 'hooks/use-fixed-rate-timer'
 import { FlowType } from 'types/exchange'
 
 const Wrapper = styled.div`
+  position: relative;
+`
+
+const InnerWrapper = styled.div`
   display: flex;
+  justify-content: center;
+`
+
+const WrapperPressedImage = styled.div`
+  cursor: pointer;
 `
 
 const Timer = styled.span`
@@ -26,6 +36,7 @@ const Timer = styled.span`
 `
 
 const FixedRate: React.FC = () => {
+  const [isShowPopUp, setIsShowPopUp] = useState(false)
   const fixedRateTimer = useFixedRateTimer()
   const isFixedRate = useAppSelector(selectIsFixedRate)
   const { isLoadingEstimation } = useAppSelector(selectCalculatorUiState)
@@ -42,22 +53,36 @@ const FixedRate: React.FC = () => {
     void dispatch(fetchEstimationAmount())
   }, [isFixedRate, dispatch])
 
-  return isFixedRate ? (
-    <Wrapper>
-      <Image
-        onClick={handleFixedRatePress}
-        width={16}
-        height={20}
-        src='/icons/fixed-rate-enabled-icon.svg'
-        alt='Lock'
-      />
-      <Timer>
-        <Image width={16} height={16} src='/icons/timer-icon.svg' alt='Timer' />
-        {!isLoadingEstimation && fixedRateTimer}
-      </Timer>
+  return (
+    <Wrapper onMouseEnter={() => setIsShowPopUp(true)} onMouseLeave={() => setIsShowPopUp(false)}>
+      {isFixedRate ? (
+        <InnerWrapper>
+          <WrapperPressedImage onClick={handleFixedRatePress}>
+            <Image width={16} height={20} src='/icons/fixed-rate-enabled-icon.svg' alt='Lock' />
+          </WrapperPressedImage>
+          <Timer>
+            <Image width={16} height={16} src='/icons/timer-icon.svg' alt='Timer' />
+            {!isLoadingEstimation && fixedRateTimer}
+          </Timer>
+        </InnerWrapper>
+      ) : (
+        <WrapperPressedImage onClick={handleFixedRatePress}>
+          <Image
+            onClick={handleFixedRatePress}
+            width={16}
+            height={20}
+            src='/icons/fixed-rate-disabled-icon.svg'
+            alt='Lock'
+          />
+        </WrapperPressedImage>
+      )}
+      {isShowPopUp && (
+        <HoverPopUp
+          title='Fixed Rate Mode'
+          text='If mode on: the is completed regardless of the rate fluctuations. Cherry Swap guarantees you will  receive the agreed amount.'
+        />
+      )}
     </Wrapper>
-  ) : (
-    <Image onClick={handleFixedRatePress} width={16} height={20} src='/icons/fixed-rate-disabled-icon.svg' alt='Lock' />
   )
 }
 

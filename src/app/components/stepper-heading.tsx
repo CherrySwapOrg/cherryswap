@@ -11,6 +11,10 @@ const Title = styled.h2<{ margin?: string }>`
   @media (max-width: ${BREAKPOINTS.mobileLarge}) {
     font-size: 18px;
   }
+
+  @media (max-width: ${BREAKPOINTS.mobile}) {
+    font-size: 14px;
+  }
 `
 
 interface Props {

@@ -24,7 +24,13 @@ const SwapButton: React.FC = () => {
 
   return (
     <SwapButtonWrapper onClick={handleSwapPress}>
-      <Image width={20} height={20} src='/icons/swap-icon.svg' alt='Swap Exchange' />
+      <Image
+        style={{ display: 'inline-block' }}
+        width={20}
+        height={20}
+        src='/icons/swap-icon.svg'
+        alt='Swap Exchange'
+      />
     </SwapButtonWrapper>
   )
 }

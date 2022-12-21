@@ -3,6 +3,7 @@ import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'r
 import { css, SerializedStyles } from '@emotion/react'
 import styled from '@emotion/styled'
 
+import ClickOutsideWrapper from 'app/components/click-outside-wrapper'
 import CurrencySelect from 'app/components/currency-select'
 import Loader from 'app/components/loader'
 import { useAppDispatch, useAppSelector } from 'app/store'
@@ -49,6 +50,10 @@ const InfoWrapper = styled.div`
   min-height: 60px;
 `
 
+const Row = styled.div`
+  display: flex;
+`
+
 const InfoInnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -59,6 +64,7 @@ const UppercaseText = styled.span<{ isPrimary?: boolean }>`
   color: ${({ theme, isPrimary }): string => (isPrimary ? theme.colors.primary : theme.colors.text.dark)};
   font-weight: ${({ isPrimary }): number => (isPrimary ? 700 : 500)};
   text-transform: uppercase;
+  align-self: center;
 `
 
 const InfoText = styled.span`
@@ -74,6 +80,11 @@ const InfoText = styled.span`
 
 const OpacityText = styled.span`
   opacity: 0.5;
+  align-self: center;
+
+  @media (max-width: ${BREAKPOINTS.mobile}) {
+    align-self: auto;
+  }
 `
 
 const openedList = css`
@@ -97,6 +108,7 @@ const CurrencySelectWrapper = styled.div<{ isOpened: boolean }>`
   width: 85%;
   z-index: 5;
   ${({ isOpened }): SerializedStyles => (isOpened ? openedList : closedList)}
+  box-shadow: ${({ theme }): string => theme.boxShadow.primary};
 `
 
 const InputWrapper = styled.div`
@@ -235,24 +247,26 @@ const Calculator: React.FC = () => {
   return (
     <>
       <InputWrapper>
-        <CalculatorInput
-          title='You Send'
-          currency={fromCurrency}
-          amount={fromAmount}
-          isLoading={isLoadingFromInput}
-          onCurrencyPress={handleCurrencySelectPress('from', true)}
-          onChange={handleFromAmountChange}
-          isErrorShown={isErrorFromInput}
-          errorMessage={formattedErrorMessage}
-        />
-        <CurrencySelectWrapper isOpened={isOpenedSelectCurrencyFrom}>
-          <CurrencySelect
-            title='Select a currency from'
-            onSelect={handleFromCurrencySelect}
-            onClose={handleCurrencySelectPress('from', false)}
-            isOpened={isOpenedSelectCurrencyFrom}
+        <ClickOutsideWrapper setIsOpen={(value): void => setIsOpenedSelectCurrencyFrom(value)}>
+          <CalculatorInput
+            title='You Send'
+            currency={fromCurrency}
+            amount={fromAmount}
+            isLoading={isLoadingFromInput}
+            onCurrencyPress={handleCurrencySelectPress('from', true)}
+            onChange={handleFromAmountChange}
+            isErrorShown={isErrorFromInput}
+            errorMessage={formattedErrorMessage}
           />
-        </CurrencySelectWrapper>
+          <CurrencySelectWrapper isOpened={isOpenedSelectCurrencyFrom}>
+            <CurrencySelect
+              title='Select a currency from'
+              onSelect={handleFromCurrencySelect}
+              onClose={handleCurrencySelectPress('from', false)}
+              isOpened={isOpenedSelectCurrencyFrom}
+            />
+          </CurrencySelectWrapper>
+        </ClickOutsideWrapper>
       </InputWrapper>
       <InfoWrapper>
         <InfoInnerWrapper>
@@ -260,35 +274,43 @@ const Calculator: React.FC = () => {
             <OpacityText>No extra fees</OpacityText>
           </InfoText>
           <InfoText>
-            <OpacityText>Estimated rate:</OpacityText>{' '}
-            <UppercaseText isPrimary={isFixedRate}>
-              1 {fromCurrencyInfo?.ticker} ~ {estimatedRate} {toCurrencyInfo?.ticker}
-            </UppercaseText>
-            <FixedRate />
+            <OpacityText>Estimated rate:</OpacityText>
+            <Row>
+              <UppercaseText isPrimary={isFixedRate}>
+                {isLoadingToInput || isLoadingFromInput ? (
+                  <Loader size='16px' />
+                ) : (
+                  `1 ${fromCurrencyInfo?.ticker} ~ ${estimatedRate} ${toCurrencyInfo?.ticker}`
+                )}
+              </UppercaseText>
+              <FixedRate />
+            </Row>
           </InfoText>
         </InfoInnerWrapper>
         <SwapButton />
       </InfoWrapper>
       <InputWrapper>
-        <CalculatorInput
-          title='You Get'
-          currency={toCurrency}
-          amount={toAmount}
-          isLoading={isLoadingToInput}
-          onCurrencyPress={handleCurrencySelectPress('to', true)}
-          isFixedRate={isFixedRate}
-          onChange={handleToAmountChange}
-          isErrorShown={isErrorToInput}
-          errorMessage={formattedErrorMessage}
-        />
-        <CurrencySelectWrapper isOpened={isOpenedSelectCurrencyTo}>
-          <CurrencySelect
-            title='Select a currency to'
-            onSelect={handleToCurrencySelect}
-            onClose={handleCurrencySelectPress('to', false)}
-            isOpened={isOpenedSelectCurrencyTo}
+        <ClickOutsideWrapper setIsOpen={(value): void => setIsOpenedSelectCurrencyTo(value)}>
+          <CalculatorInput
+            title='You Get'
+            currency={toCurrency}
+            amount={toAmount}
+            isLoading={isLoadingToInput}
+            onCurrencyPress={handleCurrencySelectPress('to', true)}
+            isFixedRate={isFixedRate}
+            onChange={handleToAmountChange}
+            isErrorShown={isErrorToInput}
+            errorMessage={formattedErrorMessage}
           />
-        </CurrencySelectWrapper>
+          <CurrencySelectWrapper isOpened={isOpenedSelectCurrencyTo}>
+            <CurrencySelect
+              title='Select a currency to'
+              onSelect={handleToCurrencySelect}
+              onClose={handleCurrencySelectPress('to', false)}
+              isOpened={isOpenedSelectCurrencyTo}
+            />
+          </CurrencySelectWrapper>
+        </ClickOutsideWrapper>
       </InputWrapper>
     </>
   )

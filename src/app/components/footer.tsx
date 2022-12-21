@@ -182,7 +182,9 @@ const Footer: React.FC = () => (
   <Wrapper>
     <InnerContainer>
       <LeftColumn>
-        <Logo src='/icons/dark-logo.svg' fontSize='20px' logoSize={53} />
+        <Link href='/'>
+          <Logo src='/icons/dark-logo.svg' fontSize='20px' logoSize={53} />
+        </Link>
         <SocialLinksWrapper>
           <SocialLink href='/'>
             <Image width={10} height={20} src='/icons/social/facebook.svg' alt='Facebook' />

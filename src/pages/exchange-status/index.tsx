@@ -7,9 +7,11 @@ import Image from 'next/image'
 import Footer from 'app/components/footer'
 import Header from 'app/components/header'
 import Link from 'app/components/link'
+import PageBackground from 'app/components/page-background'
 import StepperHeading from 'app/components/stepper-heading'
 import { inputStyle } from 'app/styles/input-style'
 import mainContainer from 'app/styles/main-container'
+import { BREAKPOINTS, EXCHANGE_ID_REGEX } from 'helpers/constants'
 
 const Wrapper = styled.div`
   ${mainContainer};
@@ -30,6 +32,10 @@ const StatusForm = styled.div`
   max-width: 700px;
   padding: 44px 75px;
   width: 100%;
+
+  @media (max-width: ${BREAKPOINTS.mobile}) {
+    padding: 10px 20px;
+  }
 `
 
 const InputWrapper = styled.input`
@@ -60,20 +66,26 @@ const ExchangeStatusPage: NextPage = () => {
   const [exchangeId, setExchangeId] = useState('')
 
   const handleInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    if (event.currentTarget.value && !EXCHANGE_ID_REGEX.test(event.currentTarget.value)) {
+      return
+    }
+
     setExchangeId(event.currentTarget.value)
   }, [])
 
   return (
     <>
       <Header />
-      <Wrapper>
-        <StatusForm>
-          <Image width={150} height={150} src='/images/exchange-status.svg' alt='Check exchange status' />
-          <StepperHeading title='Check your transaction status' />
-          <InputWrapper value={exchangeId} onChange={handleInputChange} placeholder='Enter Transaction ID' />
-          <CheckLink href={`/exchange?id=${exchangeId}`}>Check</CheckLink>
-        </StatusForm>
-      </Wrapper>
+      <PageBackground>
+        <Wrapper>
+          <StatusForm>
+            <Image width={150} height={150} src='/images/exchange-status.svg' alt='Check exchange status' />
+            <StepperHeading title='Check your transaction status' />
+            <InputWrapper value={exchangeId} onChange={handleInputChange} placeholder='Enter Transaction ID' />
+            <CheckLink href={`/exchange?id=${exchangeId}`}>Check</CheckLink>
+          </StatusForm>
+        </Wrapper>
+      </PageBackground>
       <Footer />
     </>
   )

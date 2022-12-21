@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 
 import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
@@ -53,16 +53,6 @@ const InfoShadow = styled.div`
   }
 `
 
-const CopyTextWrapper = styled.div`
-  align-items: center;
-  cursor: pointer;
-  display: flex;
-  font-size: 20px;
-  font-weight: 800;
-  gap: 10px;
-  word-break: break-word;
-`
-
 const Divider = styled.div`
   background-color: ${({ theme }): string => theme.colors.text.placeholder};
   margin: 30px 0 10px;
@@ -84,15 +74,6 @@ const ExchangeStatus: React.FC = () => {
   const exchangeStatus = useAppSelector(selectExchangeStatusInfo)
 
   const theme = useTheme()
-
-  const handleCopyPress = useCallback(
-    (text?: string) => () => {
-      if (text) {
-        void navigator.clipboard.writeText(text)
-      }
-    },
-    [],
-  )
 
   if (!exchangeStatus.id) {
     return (
@@ -123,9 +104,7 @@ const ExchangeStatus: React.FC = () => {
         {exchangeStatus.payinAddress && (
           <>
             <InfoSection title='To this address'>
-              <CopyTextWrapper onClick={handleCopyPress(exchangeStatus.payinAddress)}>
-                {exchangeStatus.payinAddress}
-              </CopyTextWrapper>
+              <CopyText text={exchangeStatus.payinAddress}>{exchangeStatus.payinAddress}</CopyText>
             </InfoSection>
             <QRCode
               style={{ maxWidth: 160, maxHeight: 160, margin: '10px 0' }}
@@ -136,9 +115,7 @@ const ExchangeStatus: React.FC = () => {
           </>
         )}
         <InfoSection title='Transaction ID'>
-          <CopyTextWrapper onClick={handleCopyPress(exchangeStatus.id)}>
-            <CopyText>{exchangeStatus.id}</CopyText>
-          </CopyTextWrapper>
+          <CopyText text={exchangeStatus.id}>{exchangeStatus.id}</CopyText>
         </InfoSection>
 
         {exchangeStatus.validUntil ? <ValidityTimer validUntil={exchangeStatus.validUntil} /> : null}

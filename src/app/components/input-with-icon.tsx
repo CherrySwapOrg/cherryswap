@@ -45,9 +45,10 @@ const Input = styled.input`
   }
 `
 
-const IconWrapper = styled.div`
+const IconWrapper = styled.div<{ margin?: string }>`
   cursor: pointer;
   transition: 0.2s linear;
+  margin: ${({ margin }): string => margin || '0'};
 
   &:hover {
     transform: scale(1.1);
@@ -58,30 +59,47 @@ interface Props {
   value: string
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
   placeholder: string
-  iconUrl: string
   iconSize?: number
   padding?: string
   errorMessage?: string
   isErrorShown?: boolean
   onIconClick?: () => void
+  isAddressValid?: boolean
 }
 
 const InputWithIcon: React.FC<Props> = ({
   value,
   onChange,
   placeholder,
-  iconUrl,
   iconSize,
   padding,
   errorMessage,
   isErrorShown,
   onIconClick,
+  isAddressValid,
 }) => (
   <Wrapper>
     <InputWrapper padding={padding} isError={isErrorShown}>
       <Input value={value} onChange={onChange} placeholder={placeholder} />
+      {isAddressValid && (
+        <IconWrapper margin='0 10px 0 0'>
+          <Image
+            onClick={onIconClick}
+            width={iconSize || 18}
+            height={iconSize || 18}
+            src='/icons/checkmark-icon.svg'
+            alt={placeholder}
+          />
+        </IconWrapper>
+      )}
       <IconWrapper>
-        <Image onClick={onIconClick} width={iconSize || 18} height={iconSize || 18} src={iconUrl} alt={placeholder} />
+        <Image
+          onClick={onIconClick}
+          width={iconSize || 18}
+          height={iconSize || 18}
+          src='/icons/qr-icon.svg'
+          alt={placeholder}
+        />
       </IconWrapper>
     </InputWrapper>
     <InputErrorMessage isShown={isErrorShown} errorMessage={errorMessage} />

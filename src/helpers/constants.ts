@@ -9,3 +9,5 @@ export const BREAKPOINTS: {
   mobileLarge: '650px',
   mobile: '425px',
 }
+
+export const EXCHANGE_ID_REGEX = /^[a-zA-Z0-9]+$/

@@ -13,8 +13,9 @@ const Button = styled.button`
     background-color: ${({ theme }): string => theme.colors.button.background.hover};
   }
 
-  :focus {
+  :active {
     background-color: ${({ theme }): string => theme.colors.button.background.press};
+    transition: none;
   }
 
   :disabled {
