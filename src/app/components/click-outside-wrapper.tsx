@@ -12,7 +12,8 @@ const ClickOutsideWrapper: React.FC<PropsWithChildren<Props>> = ({ children, set
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const handleClick = (event): void => {
+    // eslint-disable-next-line
+    const handleClick = (event: any): void => {
       if (ref.current && !ref.current.contains(event.target)) {
         setIsOpen(false)
       }
