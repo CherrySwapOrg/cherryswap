@@ -49,18 +49,13 @@ const CopyText: React.FC<PropsWithChildren<Props>> = ({ text, children, iconSize
     }
   }, [isShowPopup, onClose])
 
-  const handleCopyPress = useCallback(
-    () => () => {
-      if (text) {
-        void navigator.clipboard.writeText(text)
-        setIsShowPopup(true)
-      }
-    },
-    [text],
-  )
+  const handleCopyPress = (): void => {
+    void navigator.clipboard.writeText(text)
+    setIsShowPopup(true)
+  }
 
   return (
-    <Wrapper onClick={handleCopyPress()}>
+    <Wrapper onClick={handleCopyPress}>
       {children}
       <Image width={iconSize || 18} height={iconSize || 18} src='/icons/copy-icon.svg' alt='Copy' />
       {isShowPopup && <Copied>Copied</Copied>}
