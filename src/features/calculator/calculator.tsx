@@ -3,6 +3,7 @@ import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'r
 import { css, SerializedStyles } from '@emotion/react'
 import styled from '@emotion/styled'
 
+import ClickOutsideWrapper from 'app/components/click-outside-wrapper'
 import CurrencySelect from 'app/components/currency-select'
 import Loader from 'app/components/loader'
 import { useAppDispatch, useAppSelector } from 'app/store'
@@ -238,24 +239,26 @@ const Calculator: React.FC = () => {
   return (
     <>
       <InputWrapper>
-        <CalculatorInput
-          title='You Send'
-          currency={fromCurrency}
-          amount={fromAmount}
-          isLoading={isLoadingFromInput}
-          onCurrencyPress={handleCurrencySelectPress('from', true)}
-          onChange={handleFromAmountChange}
-          isErrorShown={isErrorFromInput}
-          errorMessage={formattedErrorMessage}
-        />
-        <CurrencySelectWrapper isOpened={isOpenedSelectCurrencyFrom}>
-          <CurrencySelect
-            title='Select a currency from'
-            onSelect={handleFromCurrencySelect}
-            onClose={handleCurrencySelectPress('from', false)}
-            isOpened={isOpenedSelectCurrencyFrom}
+        <ClickOutsideWrapper setIsOpen={(value): void => setIsOpenedSelectCurrencyFrom(value)}>
+          <CalculatorInput
+            title='You Send'
+            currency={fromCurrency}
+            amount={fromAmount}
+            isLoading={isLoadingFromInput}
+            onCurrencyPress={handleCurrencySelectPress('from', true)}
+            onChange={handleFromAmountChange}
+            isErrorShown={isErrorFromInput}
+            errorMessage={formattedErrorMessage}
           />
-        </CurrencySelectWrapper>
+          <CurrencySelectWrapper isOpened={isOpenedSelectCurrencyFrom}>
+            <CurrencySelect
+              title='Select a currency from'
+              onSelect={handleFromCurrencySelect}
+              onClose={handleCurrencySelectPress('from', false)}
+              isOpened={isOpenedSelectCurrencyFrom}
+            />
+          </CurrencySelectWrapper>
+        </ClickOutsideWrapper>
       </InputWrapper>
       <InfoWrapper>
         <InfoInnerWrapper>
@@ -277,25 +280,27 @@ const Calculator: React.FC = () => {
         <SwapButton />
       </InfoWrapper>
       <InputWrapper>
-        <CalculatorInput
-          title='You Get'
-          currency={toCurrency}
-          amount={toAmount}
-          isLoading={isLoadingToInput}
-          onCurrencyPress={handleCurrencySelectPress('to', true)}
-          isFixedRate={isFixedRate}
-          onChange={handleToAmountChange}
-          isErrorShown={isErrorToInput}
-          errorMessage={formattedErrorMessage}
-        />
-        <CurrencySelectWrapper isOpened={isOpenedSelectCurrencyTo}>
-          <CurrencySelect
-            title='Select a currency to'
-            onSelect={handleToCurrencySelect}
-            onClose={handleCurrencySelectPress('to', false)}
-            isOpened={isOpenedSelectCurrencyTo}
+        <ClickOutsideWrapper setIsOpen={(value): void => setIsOpenedSelectCurrencyTo(value)}>
+          <CalculatorInput
+            title='You Get'
+            currency={toCurrency}
+            amount={toAmount}
+            isLoading={isLoadingToInput}
+            onCurrencyPress={handleCurrencySelectPress('to', true)}
+            isFixedRate={isFixedRate}
+            onChange={handleToAmountChange}
+            isErrorShown={isErrorToInput}
+            errorMessage={formattedErrorMessage}
           />
-        </CurrencySelectWrapper>
+          <CurrencySelectWrapper isOpened={isOpenedSelectCurrencyTo}>
+            <CurrencySelect
+              title='Select a currency to'
+              onSelect={handleToCurrencySelect}
+              onClose={handleCurrencySelectPress('to', false)}
+              isOpened={isOpenedSelectCurrencyTo}
+            />
+          </CurrencySelectWrapper>
+        </ClickOutsideWrapper>
       </InputWrapper>
     </>
   )
