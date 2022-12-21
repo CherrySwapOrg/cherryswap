@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 const Wrapper = styled.div``
 
 interface Props {
-  setIsOpen: (value: boolean) => void
+  setIsOpen?: (value: boolean) => void
 }
 
 const ClickOutsideWrapper: React.FC<PropsWithChildren<Props>> = ({ children, setIsOpen }) => {
@@ -14,7 +14,7 @@ const ClickOutsideWrapper: React.FC<PropsWithChildren<Props>> = ({ children, set
   useEffect(() => {
     // eslint-disable-next-line
     const handleClick = (event: any): void => {
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (setIsOpen && ref.current && !ref.current.contains(event.target)) {
         setIsOpen(false)
       }
     }
