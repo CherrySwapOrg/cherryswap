@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
+import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 
@@ -80,7 +81,7 @@ const NavigationLink = styled(Link)<{ isFirst?: boolean }>`
 
 const Header: React.FC = () => {
   const [isOpened, setIsOpened] = useState(false)
-
+  const theme = useTheme()
   const toggleMenuOpened = useCallback(() => {
     if (!isOpened) {
       document.body.style.overflow = 'hidden'
@@ -94,7 +95,10 @@ const Header: React.FC = () => {
   return (
     <Wrapper isOpened={isOpened}>
       <Link href='/'>
-        <Logo src={isOpened ? '/icons/dark-logo.svg' : '/icons/light-logo.svg'} />
+        <Logo
+          src={isOpened ? '/icons/dark-logo.svg' : '/icons/light-logo.svg'}
+          textColor={isOpened ? theme.colors.primaryOnDark : theme.colors.text.dark}
+        />
       </Link>
       <DrawerMenuButton onClick={toggleMenuOpened}>
         {!isOpened ? (

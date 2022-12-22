@@ -81,7 +81,7 @@ const FixedRate: React.FC = () => {
         <ClickOutsideWrapper setIsOpen={setIsShowPopUp}>
           <HoverPopUp
             title='Fixed Rate Mode'
-            text='If mode on: the is completed regardless of the rate fluctuations. Cherry Swap guarantees you will  receive the agreed amount.'
+            text='The exchange is completed regardless of the rate fluctuations. Cherry Swap guarantees you will receive the agreed amount.'
           />
         </ClickOutsideWrapper>
       )}

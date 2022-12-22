@@ -9,12 +9,13 @@ const LogoWrapper = styled.div`
   z-index: 10;
 `
 
-const TextWrapper = styled.div<{ fontSize?: string }>`
+const TextWrapper = styled.div<{ fontSize?: string; textColor?: string }>`
   display: flex;
   flex-direction: column;
   font-size: ${({ fontSize }): string => fontSize || '24px'};
   justify-content: center;
   margin-left: 10px;
+  color: ${({ theme, textColor }): string => textColor || theme.colors.text.dark};
 `
 
 const LogoText = styled.span`
@@ -27,12 +28,13 @@ interface Props {
   logoSize?: number
   fontSize?: string
   src?: string
+  textColor?: string
 }
 
-const Logo: React.FC<Props> = ({ logoSize, fontSize, src }) => (
+const Logo: React.FC<Props> = ({ logoSize, fontSize, src, textColor }) => (
   <LogoWrapper>
     <Image width={logoSize || 60} height={logoSize || 60} src={src || '/icons/light-logo.svg'} alt='Cherry swap' />
-    <TextWrapper fontSize={fontSize}>
+    <TextWrapper fontSize={fontSize} textColor={textColor}>
       <LogoText>Cherry</LogoText>
       <LogoText>swap</LogoText>
     </TextWrapper>
