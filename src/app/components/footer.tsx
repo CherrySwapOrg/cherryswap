@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 
@@ -152,10 +153,6 @@ const LinksContainer = styled.div`
   }
 `
 
-const LinkFooterLogo = styled(Link)`
-  color: ${({ theme }): string => theme.colors.primaryOnDark};
-`
-
 const Copyright = styled.span`
   align-self: flex-end;
   color: ${({ theme }): string => theme.colors.text.main};
@@ -182,72 +179,76 @@ const StatusLink = styled(Link)`
   padding: 8px 16px;
 `
 
-const Footer: React.FC = () => (
-  <Wrapper>
-    <InnerContainer>
-      <LeftColumn>
-        <LinkFooterLogo href='/'>
-          <Logo src='/icons/dark-logo.svg' fontSize='20px' logoSize={53} />
-        </LinkFooterLogo>
-        <SocialLinksWrapper>
+const Footer: React.FC = () => {
+  const theme = useTheme()
+
+  return (
+    <Wrapper>
+      <InnerContainer>
+        <LeftColumn>
+          <Link href='/'>
+            <Logo src='/icons/dark-logo.svg' fontSize='20px' logoSize={53} textColor={theme.colors.primaryOnDark} />
+          </Link>
+          <SocialLinksWrapper>
+            <SocialLink href='/'>
+              <Image width={10} height={20} src='/icons/social/facebook.svg' alt='Facebook' />
+            </SocialLink>
+            <SocialLink href='https://twitter.com/CherryBlosmSwap'>
+              <Image width={20} height={16} src='/icons/social/twitter.svg' alt='Twitter' />
+            </SocialLink>
+            <SocialLink href='/'>
+              <Image width={20} height={20} src='/icons/social/instagram.svg' alt='Instagram' />
+            </SocialLink>
+          </SocialLinksWrapper>
+          <MobileDivider />
+        </LeftColumn>
+        <RightColumn>
+          <InnerColumn>
+            <NavigationHeader>Cherry swap</NavigationHeader>
+            <NavigationLink href='/about'>About us</NavigationLink>
+            <NavigationLink href='/contact-us'>Contact us</NavigationLink>
+            <NavigationLink href='/terms-of-use'>Terms of Use</NavigationLink>
+            <NavigationLink href='/privacy-policy'>Privacy Policy</NavigationLink>
+          </InnerColumn>
+          <InnerColumn>
+            <NavigationHeader>Support</NavigationHeader>
+            <NavigationLink href='/'>How it Works</NavigationLink>
+            <NavigationLink href='/'>KYC/AML</NavigationLink>
+            <StatusLink href='/exchange-status'>
+              Transaction Status{' '}
+              <Image width={20} height={20} src='/icons/arrow-circle-right-icon.svg' alt='Arrow right' />
+            </StatusLink>
+          </InnerColumn>
+        </RightColumn>
+      </InnerContainer>
+      <InnerContainer>
+        <Divider />
+      </InnerContainer>
+      <InnerContainer>
+        <MobileSocialLinks>
           <SocialLink href='/'>
             <Image width={10} height={20} src='/icons/social/facebook.svg' alt='Facebook' />
           </SocialLink>
-          <SocialLink href='/'>
+          <SocialLink href='https://twitter.com/CherryBlosmSwap'>
             <Image width={20} height={16} src='/icons/social/twitter.svg' alt='Twitter' />
           </SocialLink>
           <SocialLink href='/'>
             <Image width={20} height={20} src='/icons/social/instagram.svg' alt='Instagram' />
           </SocialLink>
-        </SocialLinksWrapper>
+        </MobileSocialLinks>
+        <LinksContainer>
+          <Link href='/'>
+            <Image width={163} height={40} src='/icons/social/trustpilot.svg' alt='Trustpilot' />
+          </Link>
+          <Link href='/'>
+            <Image width={115} height={24} src='/icons/social/bestchange.svg' alt='Trustpilot' />
+          </Link>
+        </LinksContainer>
         <MobileDivider />
-      </LeftColumn>
-      <RightColumn>
-        <InnerColumn>
-          <NavigationHeader>Cherry swap</NavigationHeader>
-          <NavigationLink href='/about'>About us</NavigationLink>
-          <NavigationLink href='/contact-us'>Contact us</NavigationLink>
-          <NavigationLink href='/terms-of-use'>Terms of Use</NavigationLink>
-          <NavigationLink href='/privacy-policy'>Privacy Policy</NavigationLink>
-        </InnerColumn>
-        <InnerColumn>
-          <NavigationHeader>Support</NavigationHeader>
-          <NavigationLink href='/'>How it Works</NavigationLink>
-          <NavigationLink href='/'>KYC/AML</NavigationLink>
-          <StatusLink href='/exchange-status'>
-            Transaction Status{' '}
-            <Image width={20} height={20} src='/icons/arrow-circle-right-icon.svg' alt='Arrow right' />
-          </StatusLink>
-        </InnerColumn>
-      </RightColumn>
-    </InnerContainer>
-    <InnerContainer>
-      <Divider />
-    </InnerContainer>
-    <InnerContainer>
-      <MobileSocialLinks>
-        <SocialLink href='/'>
-          <Image width={10} height={20} src='/icons/social/facebook.svg' alt='Facebook' />
-        </SocialLink>
-        <SocialLink href='/'>
-          <Image width={20} height={16} src='/icons/social/twitter.svg' alt='Twitter' />
-        </SocialLink>
-        <SocialLink href='/'>
-          <Image width={20} height={20} src='/icons/social/instagram.svg' alt='Instagram' />
-        </SocialLink>
-      </MobileSocialLinks>
-      <LinksContainer>
-        <Link href='/'>
-          <Image width={163} height={40} src='/icons/social/trustpilot.svg' alt='Trustpilot' />
-        </Link>
-        <Link href='/'>
-          <Image width={115} height={24} src='/icons/social/bestchange.svg' alt='Trustpilot' />
-        </Link>
-      </LinksContainer>
-      <MobileDivider />
-      <Copyright>Copyright © 2022 Cherry Swap. All rights reserved.</Copyright>
-    </InnerContainer>
-  </Wrapper>
-)
+        <Copyright>Copyright © 2022 Cherry Swap. All rights reserved.</Copyright>
+      </InnerContainer>
+    </Wrapper>
+  )
+}
 
 export default Footer
