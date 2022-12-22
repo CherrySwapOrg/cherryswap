@@ -4,7 +4,9 @@ import { BREAKPOINTS } from 'helpers/constants'
 
 const PageBackground = styled.div`
   background: url('/images/page-background.svg');
-  background-position: 0 -85%;
+  background-repeat: no-repeat space;
+  background-position: 0 -100%;
+  background-size: 100%, 100vh;
 
   @media (max-width: ${BREAKPOINTS.tablet}) {
     background-position: 0 -20%;

@@ -152,6 +152,10 @@ const LinksContainer = styled.div`
   }
 `
 
+const LinkFooterLogo = styled(Link)`
+  color: ${({ theme }): string => theme.colors.primaryOnDark};
+`
+
 const Copyright = styled.span`
   align-self: flex-end;
   color: ${({ theme }): string => theme.colors.text.main};
@@ -182,9 +186,9 @@ const Footer: React.FC = () => (
   <Wrapper>
     <InnerContainer>
       <LeftColumn>
-        <Link href='/'>
+        <LinkFooterLogo href='/'>
           <Logo src='/icons/dark-logo.svg' fontSize='20px' logoSize={53} />
-        </Link>
+        </LinkFooterLogo>
         <SocialLinksWrapper>
           <SocialLink href='/'>
             <Image width={10} height={20} src='/icons/social/facebook.svg' alt='Facebook' />

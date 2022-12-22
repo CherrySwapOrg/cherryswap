@@ -57,13 +57,11 @@ const NextButton = styled(CommonButton)`
   flex-basis: 70%;
 `
 
-const MobileModal = styled.div<{ isShown?: boolean }>`
+const MobileModal = styled.div`
   align-items: center;
-  background-color: ${({ theme }): string => theme.colors.text.dark}EE;
+  background-color: ${({ theme }): string => theme.colors.text.dark};
   justify-content: center;
   display: flex;
-  visibility: ${({ isShown }): string => (isShown ? 'visible' : 'hidden')};
-  opacity: ${({ isShown }): string => (isShown ? '1' : '0')};
   position: fixed;
   top: 0;
   left: 0;
@@ -86,7 +84,7 @@ const ConfirmStep: React.FC<Props> = ({ onBackStepPress }) => {
   const fromCurrencyInfo = useAppSelector((state) => selectCurrencyInfo(state, fromCurrency))
 
   const [isAgreed, setIsAgreed] = useState(true)
-  const [isModalShown, setIsModalShown] = useState(false)
+  const [isModalShown, setIsModalShown] = useState(true)
   const [didWarningShow, setDidWarningShow] = useState(false)
 
   const router = useRouter()
@@ -106,28 +104,30 @@ const ConfirmStep: React.FC<Props> = ({ onBackStepPress }) => {
     setIsAgreed(!isAgreed)
   }, [isAgreed])
 
-  const handleNextPress = useCallback(async () => {
-    if (window.innerWidth < 990 && !didWarningShow) {
-      setIsModalShown(true)
+  const handleNextPress = useCallback(
+    // eslint-disable-next-line
+    async (event: any) => {
+      event.stopPropagation()
 
-      return
-    }
+      if (window.innerWidth < 990 && !didWarningShow) {
+        setDidWarningShow(true)
+        setIsModalShown(true)
 
-    if (!isAgreed) {
-      return
-    }
+        return
+      }
 
-    const exchange = await dispatch(sendExchange()).unwrap()
+      if (!isAgreed) {
+        return
+      }
 
-    if (exchange?.id) {
-      void router.replace(`/exchange?id=${exchange?.id}`)
-    }
-  }, [isAgreed, dispatch, router, didWarningShow])
+      const exchange = await dispatch(sendExchange()).unwrap()
 
-  const handleCloseWarningModal = useCallback(() => {
-    setIsModalShown(false)
-    setDidWarningShow(true)
-  }, [])
+      if (exchange?.id) {
+        void router.replace(`/exchange?id=${exchange?.id}`)
+      }
+    },
+    [isAgreed, dispatch, router, didWarningShow],
+  )
 
   return (
     <ConfirmWrapper>
@@ -154,11 +154,13 @@ const ConfirmStep: React.FC<Props> = ({ onBackStepPress }) => {
       </SectionWrapper>
       <ButtonsWrapper>
         <BackButton onClick={onBackStepPress}>Back</BackButton>
-        <NextButton onClick={handleNextPress}>Next</NextButton>
+        <NextButton onClick={(event): Promise<void> => handleNextPress(event)}>Next</NextButton>
       </ButtonsWrapper>
-      <MobileModal isShown={isModalShown}>
-        <WarningModal onClose={handleCloseWarningModal} />
-      </MobileModal>
+      {isModalShown && (
+        <MobileModal>
+          <WarningModal onClose={(): void => setIsModalShown(false)} />
+        </MobileModal>
+      )}
     </ConfirmWrapper>
   )
 }
