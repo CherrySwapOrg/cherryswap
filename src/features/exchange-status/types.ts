@@ -6,14 +6,18 @@ export interface ChangeNowExchange {
   toCurrency?: string
   id?: string
   updatedAt?: string
-  expectedSendAmount?: number
-  expectedReceiveAmount?: number
+  expectedAmountFrom?: number
+  expectedAmountTo?: number
   createdAt?: string
-  isPartner?: boolean
   payinExtraId?: string
-  payinExtraIdName?: string
   validUntil?: string
   isExpiredExchange: boolean
-  amountSend?: string
-  amountReceive?: string
+  amountFrom?: string
+  amountTo?: string
+  depositReceivedAt?: string
+  fromNetwork?: string
+  toNetwork?: string
+  fromLegacyTicker?: string
+  toLegacyTicker?: string
+  payinHash?: string
 }

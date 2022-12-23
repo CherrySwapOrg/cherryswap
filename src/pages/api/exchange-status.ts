@@ -11,7 +11,15 @@ const changeNowApiClient = axios.create({
 })
 
 const exchangeStatus: NextApiHandler = async (req, res) => {
-  const response = await changeNowApiClient.get(`/v1/transactions/${req.query.id}/${EnvironmentConfig.changeNowApiKey}`)
+  const {
+    query: { id },
+  } = req
+
+  const response = await changeNowApiClient.get(`/v2/exchange/by-id`, {
+    params: {
+      id,
+    },
+  })
 
   res.status(response.status).json(response?.data)
 }
