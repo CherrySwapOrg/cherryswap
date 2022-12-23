@@ -4,7 +4,7 @@ import { NextApiHandler } from 'next'
 import EnvironmentConfig from 'app/environment-config'
 
 const changeNowApiClient = axios.create({
-  baseURL: EnvironmentConfig.changeNowExchangeStatusApiUrl,
+  baseURL: EnvironmentConfig.changeNowApiUrl,
   headers: {
     'x-changenow-api-key': EnvironmentConfig.changeNowApiKey,
   },
