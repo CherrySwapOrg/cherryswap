@@ -120,7 +120,7 @@ export const calculatorSlice = createSlice({
       }
     })
     builder.addCase(fetchEstimationAmount.rejected, (state, action) => {
-      state.errorMessage = action.payload
+      state.errorMessage = action.payload as string
 
       if (state.flowInfo.type === ExchangeType.Reverse) {
         state.ui.isLoadingFromInput = false
