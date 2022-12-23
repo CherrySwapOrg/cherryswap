@@ -17,6 +17,24 @@ export interface CurrencyInfo {
   icon: string
 }
 
+export interface GetPairInfoRequest {
+  fromCurrency: string
+  fromNetwork: string
+  toCurrency: string
+  toNetwork: string
+  flow: string
+}
+
+export interface GetPairInfoResponse {
+  flow: string
+  fromCurrency: string
+  fromNetwork: string
+  maxAmount: number | null
+  minAmount: number | null
+  toCurrency: string
+  toNetwork: string
+}
+
 export interface GetEstimatedAmountRequest {
   fromCurrency: string
   fromNetwork: string
@@ -30,19 +48,21 @@ export interface GetEstimatedAmountRequest {
 }
 
 export interface GetEstimatedAmountResponse {
-  id: string
-  isAllowed: boolean
+  fromCurrency: string
+  fromNetwork: string
+  toCurrency: string
+  toNetwork: string
+  flow: string
   type: string
-  label: string
-  isConvertible: boolean
-  isAmountInRange: boolean
-  estimatedAmount: number | null
-  maxAmount: number | null
-  minAmount: number | null
-  priority: number
-  custom: Record<string, string> | null
-  error: { error: string; message: string }
-  cashback: string
+  rateId: string | null
+  validUntil: string | null
+  transactionSpeedForecast: string
+  warningMessage: string | null
+  depositFee: number
+  withdrawalFee: number
+  userId: number | null
+  fromAmount: number
+  toAmount: number
 }
 
 export interface GetCurrencyInfoResponse {
@@ -92,7 +112,7 @@ export interface CalculatorSlice {
     rateId: string
     validUntil: string
   }
-  error: string
+  // error: string
   errorMessage: string
   ui: {
     isFromInputTouched: boolean

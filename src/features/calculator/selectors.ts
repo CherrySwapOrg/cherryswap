@@ -67,8 +67,7 @@ export const selectExchangeType = createSelector(
 export const selectExchangeError = createSelector(
   (state: AppState) => state.calculator,
   (_: AppState) => _,
-  ({ error, errorMessage }) => ({
-    error,
+  ({ errorMessage }) => ({
     errorMessage,
   }),
 )

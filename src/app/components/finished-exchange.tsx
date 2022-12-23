@@ -58,11 +58,11 @@ const FinishedExchange: React.FC = () => {
       <Description>
         <InfoSection
           title='You Sent'
-          value={`${exchangeStatus.amountSend} ${exchangeStatus.fromCurrency?.toUpperCase()}`}
+          value={`${exchangeStatus.amountFrom} ${exchangeStatus.fromCurrency?.toUpperCase()}`}
         />
         <InfoSection
           title='You Sent'
-          value={`${exchangeStatus.amountReceive} ${exchangeStatus.toCurrency?.toUpperCase()}`}
+          value={`${exchangeStatus.amountTo} ${exchangeStatus.toCurrency?.toUpperCase()}`}
         />
         <InfoSection title='Receipent address' value={exchangeStatus.payoutAddress} />
         <InfoSection title='Transaction ID' value={exchangeStatus.id} />

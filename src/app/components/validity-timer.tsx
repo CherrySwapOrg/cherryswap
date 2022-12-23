@@ -46,7 +46,7 @@ interface Props {
 }
 
 const ValidityTimer: React.FC<Props> = () => {
-  const { expectedSendAmount, fromCurrency } = useAppSelector((state) => state.exchangeStatus)
+  const { expectedAmountFrom, fromCurrency } = useAppSelector((state) => state.exchangeStatus)
 
   const { timeLeft, totalTime, displayedTime } = useFixedRateStatusTimer()
 
@@ -66,7 +66,7 @@ const ValidityTimer: React.FC<Props> = () => {
     <Wrapper>
       <InnerWrapper width={width} />
       <Time>
-        <TimeHighlight>{displayedTime}</TimeHighlight> Time left to send {expectedSendAmount}{' '}
+        <TimeHighlight>{displayedTime}</TimeHighlight> Time left to send {expectedAmountFrom}{' '}
         {fromCurrency?.toUpperCase()}
       </Time>
     </Wrapper>

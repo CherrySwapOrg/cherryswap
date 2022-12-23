@@ -10,18 +10,23 @@ const changeNowApiClient = axios.create({
   },
 })
 
-const exchangeStatus: NextApiHandler = async (req, res) => {
+const exchangeRange: NextApiHandler = async (req, res) => {
   const {
-    query: { id },
+    query: { fromCurrency, toCurrency, fromNetwork, toNetwork, flow },
   } = req
 
-  const response = await changeNowApiClient.get(`/v2/exchange/by-id`, {
+  const response = await changeNowApiClient.get('/v2/exchange/range', {
+    validateStatus: undefined,
     params: {
-      id,
+      fromCurrency,
+      fromNetwork,
+      toCurrency,
+      toNetwork,
+      flow,
     },
   })
 
   res.status(response.status).json(response?.data)
 }
 
-export default exchangeStatus
+export default exchangeRange

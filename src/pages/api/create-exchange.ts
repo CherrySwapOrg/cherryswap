@@ -11,7 +11,7 @@ const changeNowApiClient = axios.create({
 })
 
 const createExchange: NextApiHandler = async (req, res) => {
-  const response = await changeNowApiClient.post('/v1.1/transactions', req.query)
+  const response = await changeNowApiClient.post('/v2/exchange', req.query)
 
   res.status(response.status).json(response?.data)
 }

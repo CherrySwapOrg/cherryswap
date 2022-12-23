@@ -28,7 +28,7 @@ import {
   selectExchangeType,
   selectIsFixedRate,
 } from 'features/calculator/selectors'
-import { fetchEstimationAmount, initCalculator } from 'features/calculator/thunks'
+import { fetchEstimationAmount, fetchEstimationNewPair, initCalculator } from 'features/calculator/thunks'
 import { BREAKPOINTS } from 'helpers/constants'
 import validateNumericString from 'helpers/validate-numeric-string'
 import { ExchangeType } from 'types/exchange'
@@ -118,9 +118,9 @@ const InputWrapper = styled.div`
 const Calculator: React.FC = () => {
   const isFixedRate = useAppSelector(selectIsFixedRate)
   const exchangeType = useAppSelector(selectExchangeType)
-  const { error, errorMessage } = useAppSelector(selectExchangeError)
+  const { errorMessage } = useAppSelector(selectExchangeError)
   const estimatedRate = useAppSelector(selectEstimatedRate)
-  const { fromAmount, toAmount, minAmount, maxAmount } = useAppSelector(selectExchangeAmounts)
+  const { fromAmount, toAmount } = useAppSelector(selectExchangeAmounts)
   const { isLoadingCalculator } = useAppSelector(selectCalculatorUiState)
   const { fromCurrency, toCurrency } = useAppSelector(selectExchangeCurrencies)
   const { isLoadingFromInput, isLoadingToInput, isFromInputTouched } = useAppSelector(selectCalculatorUiState)
@@ -140,22 +140,6 @@ const Calculator: React.FC = () => {
     () => exchangeType === ExchangeType.Reverse && !!errorMessage,
     [exchangeType, errorMessage],
   )
-
-  const formattedErrorMessage = useMemo(() => {
-    if (error === 'deposit_too_small') {
-      return `Minimum amount is ${minAmount} ${
-        isErrorFromInput ? fromCurrencyInfo.ticker?.toUpperCase() : toCurrencyInfo.ticker?.toUpperCase()
-      }`
-    }
-
-    if (error === 'deposit_too_big') {
-      return `Maximum amount is ${maxAmount} ${
-        isErrorFromInput ? fromCurrencyInfo.ticker?.toUpperCase() : toCurrencyInfo.ticker?.toUpperCase()
-      }`
-    }
-
-    return errorMessage
-  }, [errorMessage, minAmount, maxAmount, error, isErrorFromInput, fromCurrencyInfo, toCurrencyInfo])
 
   const dispatch = useAppDispatch()
 
@@ -197,7 +181,7 @@ const Calculator: React.FC = () => {
         }
       }
 
-      void dispatch(fetchEstimationAmount())
+      void dispatch(fetchEstimationNewPair())
     },
     [dispatch, isFromInputTouched, currenciesInfo],
   )
@@ -206,7 +190,7 @@ const Calculator: React.FC = () => {
     (currency: string) => () => {
       setIsOpenedSelectCurrencyTo(false)
       dispatch(setToCurrency(currency))
-      void dispatch(fetchEstimationAmount())
+      void dispatch(fetchEstimationNewPair())
     },
     [dispatch],
   )
@@ -256,7 +240,7 @@ const Calculator: React.FC = () => {
             onCurrencyPress={handleCurrencySelectPress('from', true)}
             onChange={handleFromAmountChange}
             isErrorShown={isErrorFromInput}
-            errorMessage={formattedErrorMessage}
+            errorMessage={errorMessage}
           />
           <CurrencySelectWrapper isOpened={isOpenedSelectCurrencyFrom}>
             <CurrencySelect
@@ -300,7 +284,7 @@ const Calculator: React.FC = () => {
             isFixedRate={isFixedRate}
             onChange={handleToAmountChange}
             isErrorShown={isErrorToInput}
-            errorMessage={formattedErrorMessage}
+            errorMessage={errorMessage}
           />
           <CurrencySelectWrapper isOpened={isOpenedSelectCurrencyTo}>
             <CurrencySelect

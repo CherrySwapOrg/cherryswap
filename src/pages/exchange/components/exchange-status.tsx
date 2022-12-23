@@ -98,7 +98,7 @@ const ExchangeStatus: React.FC = () => {
         <StepperHeading title='Send the funds you would like to exchange' />
         <InfoSection
           title='Send in a single transaction this amount:'
-          bigValue={`${exchangeStatus.expectedSendAmount} ${exchangeStatus.fromCurrency}`}
+          bigValue={`${exchangeStatus.expectedAmountFrom} ${exchangeStatus.fromCurrency}`}
           fontSize={20}
         />
         {exchangeStatus.payinAddress && (
@@ -129,7 +129,7 @@ const ExchangeStatus: React.FC = () => {
 
       <InfoSection
         title='You Get'
-        value={`${exchangeStatus.expectedReceiveAmount} ${exchangeStatus.toCurrency?.toUpperCase()}`}
+        value={`${exchangeStatus.expectedAmountTo} ${exchangeStatus.toCurrency?.toUpperCase()}`}
       />
       <InfoSection title='Recipient address' value={exchangeStatus.payoutAddress} />
     </>

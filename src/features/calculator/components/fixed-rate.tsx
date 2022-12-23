@@ -8,7 +8,7 @@ import HoverPopUp from 'app/components/hover-pop-up'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { setFlow } from 'features/calculator/calculator-slice'
 import { selectCalculatorUiState, selectIsFixedRate } from 'features/calculator/selectors'
-import { fetchEstimationAmount } from 'features/calculator/thunks'
+import { fetchEstimationNewPair } from 'features/calculator/thunks'
 import useFixedRateTimer from 'hooks/use-fixed-rate-timer'
 import { FlowType } from 'types/exchange'
 
@@ -51,7 +51,7 @@ const FixedRate: React.FC = () => {
       dispatch(setFlow(FlowType.FixedRate))
     }
 
-    void dispatch(fetchEstimationAmount())
+    void dispatch(fetchEstimationNewPair())
   }, [isFixedRate, dispatch])
 
   return (
@@ -68,13 +68,7 @@ const FixedRate: React.FC = () => {
         </InnerWrapper>
       ) : (
         <WrapperPressedImage onClick={handleFixedRatePress}>
-          <Image
-            onClick={handleFixedRatePress}
-            width={16}
-            height={20}
-            src='/icons/fixed-rate-disabled-icon.svg'
-            alt='Lock'
-          />
+          <Image width={16} height={20} src='/icons/fixed-rate-disabled-icon.svg' alt='Lock' />
         </WrapperPressedImage>
       )}
       {isShowPopUp && (
