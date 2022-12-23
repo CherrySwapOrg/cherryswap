@@ -12,8 +12,8 @@ const initialState: CalculatorSlice = {
   amounts: {
     from: '0.1',
     to: undefined,
-    minAmount: undefined,
-    maxAmount: undefined,
+    // minAmount: undefined,
+    // maxAmount: undefined,
   },
   addresses: {
     toAddress: '',
@@ -28,7 +28,7 @@ const initialState: CalculatorSlice = {
     validUntil: '',
   },
   currenciesInfo: {},
-  error: '',
+  // error: '',
   errorMessage: '',
   ui: {
     isFromInputTouched: false,
@@ -89,31 +89,21 @@ export const calculatorSlice = createSlice({
       state.ui.isLoadingCalculator = true
     })
     builder.addCase(fetchEstimationAmount.fulfilled, (state, action) => {
-      const { estimatedAmount } = action.payload
+      const { toAmount, fromAmount } = action.payload
 
       if (state.flowInfo.type === ExchangeType.Reverse) {
         state.ui.isLoadingFromInput = false
-        state.amounts.from = String(estimatedAmount || '')
-        state.estimatedRate = (Number(state.amounts.to) / Number(estimatedAmount || 1)).toFixed(2)
+        state.amounts.from = String(fromAmount || '')
+        state.estimatedRate = (Number(state.amounts.to) / Number(fromAmount || 1)).toFixed(2)
       } else {
         state.ui.isLoadingToInput = false
-        state.amounts.to = String(estimatedAmount || '')
-        state.estimatedRate = (Number(estimatedAmount || 0) / Number(state.amounts.from)).toFixed(2)
+        state.amounts.to = String(toAmount || '')
+        state.estimatedRate = (Number(toAmount || 0) / Number(state.amounts.from)).toFixed(2)
       }
 
       if (state.flowInfo.flow === FlowType.FixedRate) {
-        state.flowInfo.rateId = action.payload.custom?.rateId || ''
-        state.flowInfo.validUntil = action.payload.custom?.validUntil || ''
-      }
-
-      if (action.payload.error) {
-        state.amounts.maxAmount = action.payload.maxAmount || undefined
-        state.amounts.minAmount = action.payload.minAmount || undefined
-        state.error = action.payload.error.error
-        state.errorMessage = action.payload.error.message
-      } else {
-        state.error = ''
-        state.errorMessage = ''
+        state.flowInfo.rateId = action.payload.rateId || ''
+        state.flowInfo.validUntil = action.payload.validUntil || ''
       }
 
       state.estimatedArrivalTime = '10 - 60'
@@ -121,12 +111,29 @@ export const calculatorSlice = createSlice({
     })
     builder.addCase(fetchEstimationAmount.pending, (state) => {
       state.ui.isLoadingEstimation = true
+      // state.error = ''
+      state.errorMessage = ''
 
       if (state.flowInfo.type === ExchangeType.Reverse) {
         state.ui.isLoadingFromInput = true
       } else {
         state.ui.isLoadingToInput = true
       }
+    })
+    builder.addCase(fetchEstimationAmount.rejected, (state, action) => {
+      state.errorMessage = action.payload
+
+      if (state.flowInfo.type === ExchangeType.Reverse) {
+        state.ui.isLoadingFromInput = false
+        state.amounts.from = ''
+        state.estimatedRate = ''
+      } else {
+        state.ui.isLoadingToInput = false
+        state.amounts.to = ''
+        state.estimatedRate = ''
+      }
+
+      state.ui.isLoadingEstimation = false
     })
   },
 })

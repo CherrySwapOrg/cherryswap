@@ -7,7 +7,7 @@ import { FlowType } from 'types/exchange'
 export const selectExchangeAmounts = createSelector(
   (state: AppState) => state.calculator,
   (_: AppState) => _,
-  ({ amounts: { from, to, minAmount, maxAmount } }) => ({ fromAmount: from, toAmount: to, minAmount, maxAmount }),
+  ({ amounts: { from, to } }) => ({ fromAmount: from, toAmount: to }),
 )
 
 export const selectExchangeCurrencies = createSelector(
@@ -67,8 +67,7 @@ export const selectExchangeType = createSelector(
 export const selectExchangeError = createSelector(
   (state: AppState) => state.calculator,
   (_: AppState) => _,
-  ({ error, errorMessage }) => ({
-    error,
+  ({ errorMessage }) => ({
     errorMessage,
   }),
 )

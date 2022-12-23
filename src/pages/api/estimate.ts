@@ -15,7 +15,7 @@ const estimate: NextApiHandler = async (req, res) => {
     query: { fromCurrency, toCurrency, fromNetwork, toNetwork, flow, type, fromAmount, toAmount },
   } = req
 
-  const response = await changeNowApiClient.get('/v1.2/exchange/estimate', {
+  const response = await changeNowApiClient.get('/v2/exchange/estimated-amount', {
     validateStatus: undefined,
     params: {
       fromCurrency,
@@ -29,7 +29,7 @@ const estimate: NextApiHandler = async (req, res) => {
     },
   })
 
-  res.status(response.status).json(response?.data?.providers?.[0])
+  res.status(response.status).json(response?.data)
 }
 
 export default estimate

@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 import type { AppState } from 'app/store'
 import { getCurrenciesInfo, getEstimatedAmount, sendExchangeInfo } from 'features/calculator/client'
@@ -86,7 +87,11 @@ export const fetchEstimationAmount = createDebouncedAsyncThunk<GetEstimatedAmoun
         flow: state.calculator.flowInfo.flow,
         useRateId: state.calculator.flowInfo.flow === FlowType.FixedRate ? state.calculator.flowInfo.rateId : undefined,
       })
-    } catch (e: unknown) {
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.response?.status === 400 && e.response?.data?.message) {
+        return thunkAPI.rejectWithValue(e.response?.data?.message)
+      }
+
       return thunkAPI.rejectWithValue('Exchange error')
     }
   },
