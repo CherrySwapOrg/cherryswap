@@ -146,18 +146,28 @@ const Calculator: React.FC = () => {
 
     if (checkedAmount && minAmount && Number(checkedAmount) < minAmount) {
       return `Minimum amount is ${minAmount} ${
-        isErrorFromInput ? fromCurrencyInfo.ticker?.toUpperCase() : toCurrencyInfo.ticker?.toUpperCase()
+        isErrorFromInput ? fromCurrencyInfo?.ticker?.toUpperCase() : toCurrencyInfo?.ticker?.toUpperCase()
       }`
     }
 
     if (checkedAmount && maxAmount && Number(checkedAmount) > maxAmount) {
       return `Maximum amount is ${maxAmount} ${
-        isErrorFromInput ? fromCurrencyInfo.ticker?.toUpperCase() : toCurrencyInfo.ticker?.toUpperCase()
+        isErrorFromInput ? fromCurrencyInfo?.ticker?.toUpperCase() : toCurrencyInfo?.ticker?.toUpperCase()
       }`
     }
 
     return errorMessage
-  }, [errorMessage, minAmount, maxAmount, isErrorFromInput, fromCurrencyInfo, toCurrencyInfo])
+  }, [
+    errorMessage,
+    minAmount,
+    maxAmount,
+    isErrorFromInput,
+    fromCurrencyInfo,
+    toCurrencyInfo,
+    fromAmount,
+    toAmount,
+    exchangeType,
+  ])
 
   const dispatch = useAppDispatch()
 
@@ -237,7 +247,7 @@ const Calculator: React.FC = () => {
 
   useEffect(() => {
     void dispatch(fetchEstimationNewPair())
-  }, [dispatch, exchangeType, toCurrency, fromCurrency])
+  }, [dispatch, exchangeType, toCurrency, fromCurrency, isFixedRate])
 
   if (isLoadingCalculator) {
     return (
