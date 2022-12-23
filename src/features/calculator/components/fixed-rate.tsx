@@ -8,7 +8,6 @@ import HoverPopUp from 'app/components/hover-pop-up'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { setFlow } from 'features/calculator/calculator-slice'
 import { selectCalculatorUiState, selectIsFixedRate } from 'features/calculator/selectors'
-import { fetchEstimationNewPair } from 'features/calculator/thunks'
 import useFixedRateTimer from 'hooks/use-fixed-rate-timer'
 import { FlowType } from 'types/exchange'
 
@@ -50,8 +49,6 @@ const FixedRate: React.FC = () => {
     } else {
       dispatch(setFlow(FlowType.FixedRate))
     }
-
-    void dispatch(fetchEstimationNewPair())
   }, [isFixedRate, dispatch])
 
   return (

@@ -141,7 +141,7 @@ const InfoStep: React.FC<Props> = ({ onNextPress }) => {
   const [isOpenedQrReader, setIsOpenedQrReader] = useState(false)
   const [isAdvancedSettingsShown, setIsAdvancedSettingsShown] = useState(false)
 
-  const { error: errorCode, errorMessage } = useAppSelector(selectExchangeError)
+  const { errorMessage } = useAppSelector(selectExchangeError)
   const { toAddress, refundAddress } = useAppSelector(selectExchangeAddresses)
   const { fromCurrency, toCurrency } = useAppSelector(selectExchangeCurrencies)
   const { isLoadingFromInput, isLoadingToInput, isLoadingEstimation } = useAppSelector(selectCalculatorUiState)
@@ -239,7 +239,7 @@ const InfoStep: React.FC<Props> = ({ onNextPress }) => {
   )
 
   const handleNextStepPress = useCallback(() => {
-    if (errorCode || errorMessage || isLoadingEstimation || isLoadingFromInput || isLoadingToInput) {
+    if (errorMessage || isLoadingEstimation || isLoadingFromInput || isLoadingToInput) {
       return
     }
 
@@ -266,7 +266,6 @@ const InfoStep: React.FC<Props> = ({ onNextPress }) => {
     isAdvancedSettingsShown,
     handleAdvancedSettingsPress,
     onNextPress,
-    errorCode,
     errorMessage,
     isLoadingFromInput,
     isLoadingToInput,
