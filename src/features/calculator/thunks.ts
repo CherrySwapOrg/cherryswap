@@ -2,14 +2,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import type { AppState } from 'app/store'
-import { getCurrenciesInfo, getEstimatedAmount, sendExchangeInfo } from 'features/calculator/client'
+import { getCurrenciesInfo, getEstimatedAmount, getPairInfo, sendExchangeInfo } from 'features/calculator/client'
 import {
   selectCurrencyInfo,
   selectExchangeAddresses,
   selectExchangeAmounts,
   selectExchangeCurrencies,
 } from 'features/calculator/selectors'
-import { CurrencyInfo, GetEstimatedAmountResponse } from 'features/calculator/types'
+import { CurrencyInfo, GetEstimatedAmountResponse, GetPairInfoResponse } from 'features/calculator/types'
 import createDebouncedAsyncThunk from 'features/create-debounced-async-thunk'
 import { setExchangeInfo } from 'features/exchange-status/exchange-status-slice'
 import { ExchangeType, FlowType } from 'types/exchange'
@@ -97,9 +97,41 @@ export const fetchEstimationAmount = createDebouncedAsyncThunk<GetEstimatedAmoun
   },
 )
 
+export const fetchPairInfo = createDebouncedAsyncThunk<GetPairInfoResponse, undefined>(
+  'calculator/fetchPairInfo',
+  { wait: 500 },
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState() as AppState
+
+    const { fromCurrency, toCurrency } = selectExchangeCurrencies(state)
+
+    const toCurrencyInfo = selectCurrencyInfo(state, toCurrency)
+    const fromCurrencyInfo = selectCurrencyInfo(state, fromCurrency)
+
+    try {
+      return await getPairInfo({
+        toCurrency: toCurrencyInfo.ticker,
+        toNetwork: toCurrencyInfo.network,
+        fromCurrency: fromCurrencyInfo.ticker,
+        fromNetwork: fromCurrencyInfo.network,
+        flow: state.calculator.flowInfo.flow,
+      })
+    } catch (e) {
+      return thunkAPI.rejectWithValue('Pair info error')
+    }
+  },
+)
+
+export const fetchEstimationNewPair = createAsyncThunk('calculator/fetchEstimationNewPair', async (_, thunkAPI) => {
+  const { dispatch } = thunkAPI
+
+  await dispatch(fetchPairInfo())
+  await dispatch(fetchEstimationAmount())
+})
+
 export const initCalculator = createAsyncThunk('calculator/initCalculator', async (_, thunkAPI) => {
   const { dispatch } = thunkAPI
 
   await dispatch(getCurrencyInfo())
-  await dispatch(fetchEstimationAmount())
+  await dispatch(fetchEstimationNewPair())
 })

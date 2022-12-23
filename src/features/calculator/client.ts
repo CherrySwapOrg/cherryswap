@@ -6,6 +6,8 @@ import {
   GetCurrencyInfoResponse,
   GetEstimatedAmountRequest,
   GetEstimatedAmountResponse,
+  GetPairInfoRequest,
+  GetPairInfoResponse,
 } from 'features/calculator/types'
 import { ChangeNowExchange } from 'features/exchange-status/types'
 import { ExchangeType, FlowType } from 'types/exchange'
@@ -59,6 +61,14 @@ export const getCurrenciesInfo = async (): Promise<Record<string, CurrencyInfo>>
   })
 
   return currencyInfoMapper(data)
+}
+
+export const getPairInfo = async (params: GetPairInfoRequest): Promise<GetPairInfoResponse> => {
+  const { data } = await axios.get<GetPairInfoResponse>('/api/exchange-range', {
+    params,
+  })
+
+  return data
 }
 
 export const getEstimatedAmount = async (params: GetEstimatedAmountRequest): Promise<GetEstimatedAmountResponse> => {

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { fetchEstimationAmount, getCurrencyInfo } from 'features/calculator/thunks'
+import { fetchEstimationAmount, fetchPairInfo, getCurrencyInfo } from 'features/calculator/thunks'
 import { CalculatorSlice } from 'features/calculator/types'
 import { ExchangeType, FlowType } from 'types/exchange'
 
@@ -12,8 +12,8 @@ const initialState: CalculatorSlice = {
   amounts: {
     from: '0.1',
     to: undefined,
-    // minAmount: undefined,
-    // maxAmount: undefined,
+    minAmount: undefined,
+    maxAmount: undefined,
   },
   addresses: {
     toAddress: '',
@@ -111,7 +111,6 @@ export const calculatorSlice = createSlice({
     })
     builder.addCase(fetchEstimationAmount.pending, (state) => {
       state.ui.isLoadingEstimation = true
-      // state.error = ''
       state.errorMessage = ''
 
       if (state.flowInfo.type === ExchangeType.Reverse) {
@@ -134,6 +133,10 @@ export const calculatorSlice = createSlice({
       }
 
       state.ui.isLoadingEstimation = false
+    })
+    builder.addCase(fetchPairInfo.fulfilled, (state, action) => {
+      state.amounts.maxAmount = action.payload.maxAmount || undefined
+      state.amounts.minAmount = action.payload.minAmount || undefined
     })
   },
 })

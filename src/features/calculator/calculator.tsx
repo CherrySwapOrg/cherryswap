@@ -28,7 +28,7 @@ import {
   selectExchangeType,
   selectIsFixedRate,
 } from 'features/calculator/selectors'
-import { fetchEstimationAmount, initCalculator } from 'features/calculator/thunks'
+import { fetchEstimationAmount, fetchEstimationNewPair, initCalculator } from 'features/calculator/thunks'
 import { BREAKPOINTS } from 'helpers/constants'
 import validateNumericString from 'helpers/validate-numeric-string'
 import { ExchangeType } from 'types/exchange'
@@ -197,7 +197,7 @@ const Calculator: React.FC = () => {
         }
       }
 
-      void dispatch(fetchEstimationAmount())
+      void dispatch(fetchEstimationNewPair())
     },
     [dispatch, isFromInputTouched, currenciesInfo],
   )
@@ -206,7 +206,7 @@ const Calculator: React.FC = () => {
     (currency: string) => () => {
       setIsOpenedSelectCurrencyTo(false)
       dispatch(setToCurrency(currency))
-      void dispatch(fetchEstimationAmount())
+      void dispatch(fetchEstimationNewPair())
     },
     [dispatch],
   )

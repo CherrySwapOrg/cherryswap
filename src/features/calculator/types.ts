@@ -17,6 +17,24 @@ export interface CurrencyInfo {
   icon: string
 }
 
+export interface GetPairInfoRequest {
+  fromCurrency: string
+  fromNetwork: string
+  toCurrency: string
+  toNetwork: string
+  flow: string
+}
+
+export interface GetPairInfoResponse {
+  flow: string
+  fromCurrency: string
+  fromNetwork: string
+  maxAmount: number | null
+  minAmount: number | null
+  toCurrency: string
+  toNetwork: string
+}
+
 export interface GetEstimatedAmountRequest {
   fromCurrency: string
   fromNetwork: string
@@ -78,8 +96,8 @@ export interface CalculatorSlice {
   amounts: {
     from?: string
     to?: string
-    // minAmount?: number
-    // maxAmount?: number
+    minAmount?: number
+    maxAmount?: number
   }
   addresses: {
     toAddress: string
