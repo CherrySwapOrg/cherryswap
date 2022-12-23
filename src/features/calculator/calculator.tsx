@@ -141,22 +141,6 @@ const Calculator: React.FC = () => {
     [exchangeType, errorMessage],
   )
 
-  // const formattedErrorMessage = useMemo(() => {
-  //   if (error === 'deposit_too_small') {
-  //     return `Minimum amount is ${minAmount} ${
-  //       isErrorFromInput ? fromCurrencyInfo.ticker?.toUpperCase() : toCurrencyInfo.ticker?.toUpperCase()
-  //     }`
-  //   }
-  //
-  //   if (error === 'deposit_too_big') {
-  //     return `Maximum amount is ${maxAmount} ${
-  //       isErrorFromInput ? fromCurrencyInfo.ticker?.toUpperCase() : toCurrencyInfo.ticker?.toUpperCase()
-  //     }`
-  //   }
-  //
-  //   return errorMessage
-  // }, [errorMessage, minAmount, maxAmount, error, isErrorFromInput, fromCurrencyInfo, toCurrencyInfo])
-
   const dispatch = useAppDispatch()
 
   const handleFromAmountChange = useCallback(
