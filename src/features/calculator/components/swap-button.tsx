@@ -6,7 +6,6 @@ import Image from 'next/image'
 import Button from 'app/components/button'
 import { useAppDispatch } from 'app/store'
 import { reverseExchange } from 'features/calculator/calculator-slice'
-import { fetchEstimationNewPair } from 'features/calculator/thunks'
 
 const SwapButtonWrapper = styled(Button)`
   width: 32px;
@@ -19,7 +18,6 @@ const SwapButton: React.FC = () => {
 
   const handleSwapPress = useCallback(() => {
     void dispatch(reverseExchange())
-    void dispatch(fetchEstimationNewPair())
   }, [dispatch])
 
   return (

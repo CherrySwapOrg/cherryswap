@@ -105,8 +105,14 @@ export const fetchPairInfo = createDebouncedAsyncThunk<GetPairInfoResponse, unde
 
     const { fromCurrency, toCurrency } = selectExchangeCurrencies(state)
 
-    const toCurrencyInfo = selectCurrencyInfo(state, toCurrency)
-    const fromCurrencyInfo = selectCurrencyInfo(state, fromCurrency)
+    const toCurrencyInfo =
+      state.calculator.flowInfo.type === ExchangeType.Direct
+        ? selectCurrencyInfo(state, toCurrency)
+        : selectCurrencyInfo(state, fromCurrency)
+    const fromCurrencyInfo =
+      state.calculator.flowInfo.type === ExchangeType.Direct
+        ? selectCurrencyInfo(state, fromCurrency)
+        : selectCurrencyInfo(state, toCurrency)
 
     try {
       return await getPairInfo({
