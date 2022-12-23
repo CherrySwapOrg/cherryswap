@@ -6,10 +6,10 @@ import Image from 'next/image'
 import ClickOutsideWrapper from 'app/components/click-outside-wrapper'
 import HoverPopUp from 'app/components/hover-pop-up'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import { setFlow } from 'features/calculator/calculator-slice'
+import { setExchangeType, setFlow } from 'features/calculator/calculator-slice'
 import { selectCalculatorUiState, selectIsFixedRate } from 'features/calculator/selectors'
 import useFixedRateTimer from 'hooks/use-fixed-rate-timer'
-import { FlowType } from 'types/exchange'
+import { ExchangeType, FlowType } from 'types/exchange'
 
 const Wrapper = styled.div`
   position: relative;
@@ -46,8 +46,10 @@ const FixedRate: React.FC = () => {
   const handleFixedRatePress = useCallback(() => {
     if (isFixedRate) {
       dispatch(setFlow(FlowType.Standard))
+      dispatch(setExchangeType(ExchangeType.Direct))
     } else {
       dispatch(setFlow(FlowType.FixedRate))
+      dispatch(setExchangeType(ExchangeType.Reverse))
     }
   }, [isFixedRate, dispatch])
 

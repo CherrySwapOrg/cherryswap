@@ -15,7 +15,7 @@ const persistConfig = {
 const calculatorPersistConfig = {
   key: 'calculator',
   storage,
-  whitelist: ['currencies', 'amounts'],
+  whitelist: ['currencies', 'amounts', 'flowInfo'],
 }
 
 const rootReducer = combineReducers({

@@ -293,7 +293,7 @@ const Calculator: React.FC = () => {
                 {isLoadingToInput || isLoadingFromInput ? (
                   <Loader size='16px' />
                 ) : (
-                  `1 ${fromCurrencyInfo?.ticker} ~ ${estimatedRate} ${toCurrencyInfo?.ticker}`
+                  `1 ${fromCurrencyInfo?.ticker} ~ ${estimatedRate || '-'} ${toCurrencyInfo?.ticker}`
                 )}
               </UppercaseText>
               <FixedRate />

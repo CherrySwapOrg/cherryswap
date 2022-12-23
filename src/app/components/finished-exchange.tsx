@@ -60,11 +60,8 @@ const FinishedExchange: React.FC = () => {
           title='You Sent'
           value={`${exchangeStatus.amountFrom} ${exchangeStatus.fromCurrency?.toUpperCase()}`}
         />
-        <InfoSection
-          title='You Sent'
-          value={`${exchangeStatus.amountTo} ${exchangeStatus.toCurrency?.toUpperCase()}`}
-        />
-        <InfoSection title='Receipent address' value={exchangeStatus.payoutAddress} />
+        <InfoSection title='You Got' value={`${exchangeStatus.amountTo} ${exchangeStatus.toCurrency?.toUpperCase()}`} />
+        <InfoSection title='Recipient address' value={exchangeStatus.payoutAddress} />
         <InfoSection title='Transaction ID' value={exchangeStatus.id} />
       </Description>
       <NewExchangeButton onClick={handleNewExchangePress}>Start new exchange</NewExchangeButton>

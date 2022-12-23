@@ -78,6 +78,9 @@ export const calculatorSlice = createSlice({
     setFlow: (state, action: PayloadAction<FlowType>) => {
       state.flowInfo.flow = action.payload
     },
+    setExchangeType: (state, action: PayloadAction<ExchangeType>) => {
+      state.flowInfo.type = action.payload
+    },
     resetExchangeState: () => initialState,
   },
   extraReducers: (builder) => {
@@ -151,6 +154,7 @@ export const {
   setRefundAddress,
   reverseExchange,
   setFlow,
+  setExchangeType,
   resetExchangeState,
 } = calculatorSlice.actions
 
