@@ -115,13 +115,15 @@ export const fetchPairInfo = createDebouncedAsyncThunk<GetPairInfoResponse, unde
         : selectCurrencyInfo(state, toCurrency)
 
     try {
-      return await getPairInfo({
+      const pairInfo = await getPairInfo({
         toCurrency: toCurrencyInfo.ticker,
         toNetwork: toCurrencyInfo.network,
         fromCurrency: fromCurrencyInfo.ticker,
         fromNetwork: fromCurrencyInfo.network,
         flow: state.calculator.flowInfo.flow,
       })
+
+      return pairInfo
     } catch (e) {
       return thunkAPI.rejectWithValue('Pair info error')
     }

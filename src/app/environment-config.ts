@@ -16,7 +16,6 @@ class EnvironmentConfig {
   public static get changeNowApiUrl(): string {
     return String(process.env.CHANGE_NOW_API_URL).trim()
   }
-
 }
 
 export default EnvironmentConfig
