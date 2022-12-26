@@ -25,7 +25,7 @@ jobs:
           echo "IMAGE_NAME=${prefix}cherryswap_$version" >> $GITHUB_ENV
 
       - name: Build images
-        run: docker build -t ${{ env.IMAGE_NAME }} .
+        run: docker build -t ${{ env.IMAGE_NAME }} --build-arg CHANGE_NOW_API_KEY=${{ secrets.CHANGE_NOW_API_KEY }} --build-arg CHANGE_NOW_API_URL=${{ secrets.CHANGE_NOW_API_URL }} --build-arg CHANGE_NOW_EXCHANGE_STATUS_API=${{ secrets.CHANGE_NOW_EXCHANGE_STATUS_API }} --build-arg NEXT_PUBLIC_CONTENT_API_URL=${{ secrets.NEXT_PUBLIC_CONTENT_API_URL }} .
 
       - name: Save image to tar
         run: docker save ${{ env.IMAGE_NAME }} -o "${{ env.IMAGE_NAME }}.tar"
@@ -43,7 +43,7 @@ jobs:
           remote: 'images/${{ env.IMAGE_NAME }}.tar'
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Connect to server via SSH
         uses: appleboy/ssh-action@v0.1.6
@@ -57,7 +57,7 @@ jobs:
             docker rm production || true
 
             docker load -i images/${{ env.IMAGE_NAME }}.tar
-            docker run --name production -d -p 3000:3000 ${{ env.IMAGE_NAME }}
+            docker run --name production -d -p 3000:3000 -e CHANGE_NOW_API_KEY=${{ secrets.CHANGE_NOW_API_KEY }} -e CHANGE_NOW_API_URL=${{ secrets.CHANGE_NOW_API_URL }} -e CHANGE_NOW_EXCHANGE_STATUS_API=${{ secrets.CHANGE_NOW_EXCHANGE_STATUS_API }} -e NEXT_PUBLIC_CONTENT_API_URL=${{ secrets.NEXT_PUBLIC_CONTENT_API_URL }} ${{ env.IMAGE_NAME }}
 
       - name: Connect to server via SSH
         uses: appleboy/ssh-action@v0.1.6
@@ -71,4 +71,4 @@ jobs:
             docker rm staging || true
 
             docker load -i images/${{ env.IMAGE_NAME }}.tar
-            docker run --name staging -d -p 1243:3000 ${{ env.IMAGE_NAME }}
+            docker run --name staging -d -p 1243:3000 -e CHANGE_NOW_API_KEY=${{ secrets.CHANGE_NOW_API_KEY }} -e CHANGE_NOW_API_URL=${{ secrets.CHANGE_NOW_API_URL }} -e CHANGE_NOW_EXCHANGE_STATUS_API=${{ secrets.CHANGE_NOW_EXCHANGE_STATUS_API }} -e NEXT_PUBLIC_CONTENT_API_URL=${{ secrets.NEXT_PUBLIC_CONTENT_API_URL }} ${{ env.IMAGE_NAME }}

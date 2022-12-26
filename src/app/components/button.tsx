@@ -1,22 +1,25 @@
 import styled from '@emotion/styled'
 
 const Button = styled.button`
-  appearance: none;
-  font-size: 32px;
-  padding-left: 12px;
-  padding-right: 12px;
-  outline: none;
-  border: 2px solid transparent;
-  color: ${({ theme }): string => theme.colors.primary};
-  padding-bottom: 4px;
+  background-color: ${({ theme }): string => theme.colors.primary};
+  border: none;
+  border-radius: ${({ theme }): string => theme.borderRadius.normal};
+  color: ${({ theme }): string => theme.colors.text.main};
   cursor: pointer;
-  background: rgba(112, 76, 182, 10%) none;
-  border-radius: 2px;
-  transition: all 0.15s;
+  outline: none;
+  transition: 0.2s linear;
 
-  &:hover,
-  &:focus {
-    border: 2px solid ${({ theme }): string => theme.colors.primary};
+  :hover {
+    background-color: ${({ theme }): string => theme.colors.button.background.hover};
+  }
+
+  :active {
+    background-color: ${({ theme }): string => theme.colors.button.background.press};
+    transition: none;
+  }
+
+  :disabled {
+    background-color: ${({ theme }): string => theme.colors.button.background.disabled};
   }
 `
 

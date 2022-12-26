@@ -7,8 +7,14 @@ module.exports = {
 
     return config
   },
-  // This is needed for reduce docker image size
   experimental: {
+    // This is needed to reduce docker image size
     outputStandalone: true,
+  },
+  compiler: {
+    styledComponents: true,
+  },
+  images: {
+    domains: ['content-api.changenow.io'],
   },
 }

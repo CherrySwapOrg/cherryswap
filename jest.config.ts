@@ -9,6 +9,7 @@ const config: InitialOptionsTsJest = {
   },
   testEnvironment: 'jsdom',
   moduleDirectories: ['node_modules', 'src'],
+  passWithNoTests: true,
 }
 
 export default config
