@@ -81,6 +81,9 @@ export const calculatorSlice = createSlice({
     setExchangeType: (state, action: PayloadAction<ExchangeType>) => {
       state.flowInfo.type = action.payload
     },
+    resetErrors: (state) => {
+      state.errorMessage = ''
+    },
     resetExchangeState: () => initialState,
   },
   extraReducers: (builder) => {
@@ -92,23 +95,26 @@ export const calculatorSlice = createSlice({
       state.ui.isLoadingCalculator = true
     })
     builder.addCase(fetchEstimationAmount.fulfilled, (state, action) => {
-      const { toAmount, fromAmount } = action.payload
+      if (action.payload) {
+        const { toAmount, fromAmount } = action.payload
 
-      if (state.flowInfo.type === ExchangeType.Reverse) {
-        state.ui.isLoadingFromInput = false
-        state.amounts.from = String(fromAmount || '')
-        state.estimatedRate = (Number(state.amounts.to) / Number(fromAmount || 1)).toFixed(2)
-      } else {
-        state.ui.isLoadingToInput = false
-        state.amounts.to = String(toAmount || '')
-        state.estimatedRate = (Number(toAmount || 0) / Number(state.amounts.from)).toFixed(2)
-      }
+        if (state.flowInfo.type === ExchangeType.Reverse) {
+          state.amounts.from = String(fromAmount || '')
+          state.estimatedRate = (Number(state.amounts.to) / Number(fromAmount || 1)).toFixed(2)
+        } else {
+          state.amounts.to = String(toAmount || '')
+          state.estimatedRate = (Number(toAmount || 0) / Number(state.amounts.from)).toFixed(2)
+        }
 
-      if (state.flowInfo.flow === FlowType.FixedRate) {
         state.flowInfo.rateId = action.payload.rateId || ''
         state.flowInfo.validUntil = action.payload.validUntil || ''
+      } else {
+        state.amounts.to = ''
+        state.amounts.from = ''
       }
 
+      state.ui.isLoadingFromInput = false
+      state.ui.isLoadingToInput = false
       state.estimatedArrivalTime = '10 - 60'
       state.ui.isLoadingEstimation = false
     })
@@ -156,6 +162,7 @@ export const {
   setFlow,
   setExchangeType,
   resetExchangeState,
+  resetErrors,
 } = calculatorSlice.actions
 
 export const calculatorReducer = calculatorSlice.reducer
