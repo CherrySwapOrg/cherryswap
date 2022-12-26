@@ -1,79 +1,61 @@
-import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import type { NextPage } from 'next'
-import Head from 'next/head'
 
-import Link from 'app/components/link'
-import Counter from 'features/counter/counter'
+import CalculatorForm from 'app/components/calculator-form'
+import Footer from 'app/components/footer'
+import Header from 'app/components/header'
+import PageBackground from 'app/components/page-background'
+import PageDescriptionText from 'app/components/page-description-text'
+import PageLargeTitle from 'app/components/page-large-title'
+import mainContainer from 'app/styles/main-container'
+import { BREAKPOINTS } from 'helpers/constants'
 
-const floating = keyframes`
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-`
+const MainPageWrapper = styled.section`
+  ${mainContainer};
+  min-height: calc(100vh - 100px);
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  line-height: 1.2;
+  padding: 50px 0 150px;
 
-const Container = styled.div`
-  text-align: center;
-`
-
-const Logo = styled.img`
-  height: 40vmin;
-  pointer-events: none;
-
-  @media (prefers-reduced-motion: no-preference) {
-    animation: ${floating} infinite 3s ease-in-out;
+  @media (max-width: ${BREAKPOINTS.tablet}) {
+    min-height: 0;
+    padding: 40px 0;
+    gap: 40px;
+    flex-direction: column;
   }
 `
 
-const Header = styled.header`
-  min-height: 100vh;
+const PageDescriptionWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: ${({ theme }): string => theme.colors.secondary};
+  gap: 20px;
+  max-width: 43%;
+
+  @media (max-width: ${BREAKPOINTS.tablet}) {
+    max-width: 100%;
+  }
 `
 
 const IndexPage: NextPage = () => (
-  <Container>
-    <Head>
-      <title>Redux Toolkit</title>
-      <link rel='icon' href='/favicon.ico' />
-    </Head>
-
-    <Header>
-      <Logo src='/logo.svg' alt='logo' />
-      <Counter />
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
-      <span>
-        <span>Learn </span>
-        <Link href='https://reactjs.org/' target='_blank' rel='noopener noreferrer'>
-          React
-        </Link>
-        <span>, </span>
-        <Link href='https://redux.js.org/' target='_blank' rel='noopener noreferrer'>
-          Redux
-        </Link>
-        <span>, </span>
-        <Link href='https://redux-toolkit.js.org/' target='_blank' rel='noopener noreferrer'>
-          Redux Toolkit
-        </Link>
-        ,<span> and </span>
-        <Link href='https://react-redux.js.org/' target='_blank' rel='noopener noreferrer'>
-          React Redux
-        </Link>
-      </span>
-    </Header>
-  </Container>
+  <>
+    <Header />
+    <PageBackground>
+      <MainPageWrapper>
+        <PageDescriptionWrapper>
+          <PageLargeTitle title='Exchange Cryptocurrency Instantly' label='Best Rates' />
+          <PageDescriptionText
+            text='Instant and unlimited exchange between 500+ assets in the world of cryptocurrencies.
+Enjoy fast swaps on a non&#8209;custodial exchange platform.'
+          />
+        </PageDescriptionWrapper>
+        <CalculatorForm />
+      </MainPageWrapper>
+    </PageBackground>
+    <Footer />
+  </>
 )
 
 export default IndexPage
