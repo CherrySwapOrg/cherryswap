@@ -12,6 +12,7 @@ import {
 import { CurrencyInfo, GetEstimatedAmountResponse, GetPairInfoResponse } from 'features/calculator/types'
 import createDebouncedAsyncThunk from 'features/create-debounced-async-thunk'
 import { setExchangeInfo } from 'features/exchange-status/exchange-status-slice'
+import { lte } from 'lib/bn'
 import { ExchangeType, FlowType } from 'types/exchange'
 
 export const getCurrencyInfo = createAsyncThunk<{ currenciesInfo: Record<string, CurrencyInfo> }>(
@@ -63,7 +64,7 @@ export const sendExchange = createAsyncThunk('calculator/sendExchangeData', asyn
   return undefined
 })
 
-export const fetchEstimationAmount = createDebouncedAsyncThunk<GetEstimatedAmountResponse, undefined>(
+export const fetchEstimationAmount = createDebouncedAsyncThunk<GetEstimatedAmountResponse | undefined, undefined>(
   'calculator/fetchEstimationAmount',
   { wait: 500 },
   async (_, thunkAPI) => {
@@ -74,6 +75,13 @@ export const fetchEstimationAmount = createDebouncedAsyncThunk<GetEstimatedAmoun
 
     const toCurrencyInfo = selectCurrencyInfo(state, toCurrency)
     const fromCurrencyInfo = selectCurrencyInfo(state, fromCurrency)
+
+    if (
+      (state.calculator.flowInfo.type === ExchangeType.Direct && (!fromAmount || lte(fromAmount, 0))) ||
+      (state.calculator.flowInfo.type === ExchangeType.Reverse && (!toAmount || lte(toAmount, 0)))
+    ) {
+      return
+    }
 
     try {
       return await getEstimatedAmount({
@@ -115,15 +123,13 @@ export const fetchPairInfo = createDebouncedAsyncThunk<GetPairInfoResponse, unde
         : selectCurrencyInfo(state, toCurrency)
 
     try {
-      const pairInfo = await getPairInfo({
+      return await getPairInfo({
         toCurrency: toCurrencyInfo.ticker,
         toNetwork: toCurrencyInfo.network,
         fromCurrency: fromCurrencyInfo.ticker,
         fromNetwork: fromCurrencyInfo.network,
         flow: state.calculator.flowInfo.flow,
       })
-
-      return pairInfo
     } catch (e) {
       return thunkAPI.rejectWithValue('Pair info error')
     }

@@ -8,6 +8,7 @@ import CurrencySelect from 'app/components/currency-select'
 import Loader from 'app/components/loader'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import {
+  resetErrors,
   setFromAmount,
   setFromCurrency,
   setIsFromInputTouched,
@@ -140,10 +141,12 @@ const Calculator: React.FC = () => {
     () => exchangeType === ExchangeType.Reverse && !!errorMessage,
     [exchangeType, errorMessage],
   )
+  const checkedAmount = useMemo(
+    () => (exchangeType === ExchangeType.Direct ? fromAmount : toAmount),
+    [exchangeType, fromAmount, toAmount],
+  )
 
   const formattedErrorMessage = useMemo(() => {
-    const checkedAmount = exchangeType === ExchangeType.Direct ? fromAmount : toAmount
-
     if (checkedAmount && minAmount && Number(checkedAmount) < minAmount) {
       return `Minimum amount is ${minAmount} ${
         isErrorFromInput ? fromCurrencyInfo?.ticker?.toUpperCase() : toCurrencyInfo?.ticker?.toUpperCase()
@@ -157,17 +160,7 @@ const Calculator: React.FC = () => {
     }
 
     return errorMessage
-  }, [
-    errorMessage,
-    minAmount,
-    maxAmount,
-    isErrorFromInput,
-    fromCurrencyInfo,
-    toCurrencyInfo,
-    fromAmount,
-    toAmount,
-    exchangeType,
-  ])
+  }, [errorMessage, minAmount, maxAmount, isErrorFromInput, fromCurrencyInfo, toCurrencyInfo, checkedAmount])
 
   const dispatch = useAppDispatch()
 
@@ -178,6 +171,7 @@ const Calculator: React.FC = () => {
       if (validateNumericString(value, Number(fromCurrencyInfo?.decimals))) {
         dispatch(setFromAmount(value))
         dispatch(setIsFromInputTouched(true))
+        void dispatch(resetErrors())
         void dispatch(fetchEstimationAmount())
       }
     },
@@ -190,6 +184,7 @@ const Calculator: React.FC = () => {
 
       if (validateNumericString(value, Number(toCurrencyInfo?.decimals))) {
         dispatch(setToAmount(value))
+        void dispatch(resetErrors())
         void dispatch(fetchEstimationAmount())
       }
     },
@@ -246,6 +241,7 @@ const Calculator: React.FC = () => {
   }, [dispatch])
 
   useEffect(() => {
+    void dispatch(resetErrors())
     void dispatch(fetchEstimationNewPair())
   }, [dispatch, exchangeType, toCurrency, fromCurrency, isFixedRate])
 
