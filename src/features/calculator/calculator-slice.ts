@@ -95,6 +95,10 @@ export const calculatorSlice = createSlice({
       state.ui.isLoadingCalculator = true
     })
     builder.addCase(fetchEstimationAmount.fulfilled, (state, action) => {
+      state.ui.isLoadingFromInput = false
+      state.ui.isLoadingToInput = false
+      state.ui.isLoadingEstimation = false
+
       if (action.payload) {
         const { toAmount, fromAmount } = action.payload
 
@@ -108,15 +112,11 @@ export const calculatorSlice = createSlice({
 
         state.flowInfo.rateId = action.payload.rateId || ''
         state.flowInfo.validUntil = action.payload.validUntil || ''
+        state.estimatedArrivalTime = action.payload.transactionSpeedForecast || '10 - 60'
       } else {
         state.amounts.to = ''
         state.amounts.from = ''
       }
-
-      state.ui.isLoadingFromInput = false
-      state.ui.isLoadingToInput = false
-      state.estimatedArrivalTime = '10 - 60'
-      state.ui.isLoadingEstimation = false
     })
     builder.addCase(fetchEstimationAmount.pending, (state) => {
       state.ui.isLoadingEstimation = true
