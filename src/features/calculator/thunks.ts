@@ -168,6 +168,7 @@ export const changeFromAmount = createAsyncThunk<void, { amount: string; currenc
     const { dispatch } = thunkAPI
 
     dispatch(resetErrors())
+    dispatch(resetFixedRateInfo())
     void dispatch(setIsFromInputTouched(true))
     void dispatch(setExchangeType(ExchangeType.Direct))
 
@@ -176,7 +177,6 @@ export const changeFromAmount = createAsyncThunk<void, { amount: string; currenc
     if (formattedAmount === '' || eq(formattedAmount, 0)) {
       dispatch(setFromAmount(formattedAmount))
       dispatch(setToAmount(''))
-      dispatch(resetFixedRateInfo())
 
       return
     }
@@ -195,6 +195,7 @@ export const changeToAmount = createAsyncThunk<void, { amount: string; currencyI
     const { dispatch } = thunkAPI
 
     dispatch(resetErrors())
+    dispatch(resetFixedRateInfo())
     void dispatch(setExchangeType(ExchangeType.Reverse))
     void dispatch(setFlow(FlowType.FixedRate))
 
@@ -203,7 +204,6 @@ export const changeToAmount = createAsyncThunk<void, { amount: string; currencyI
     if (formattedAmount === '' || eq(formattedAmount, 0)) {
       dispatch(setFromAmount(''))
       dispatch(setToAmount(formattedAmount))
-      dispatch(resetFixedRateInfo())
 
       return
     }

@@ -9,6 +9,7 @@ import Loader from 'app/components/loader'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import {
   resetErrors,
+  resetFixedRateInfo,
   setFromAmount,
   setFromCurrency,
   setToAmount,
@@ -252,6 +253,7 @@ const Calculator: React.FC = () => {
   useEffect(() => {
     if (!isLoadingCalculator) {
       void dispatch(resetErrors())
+      void dispatch(resetFixedRateInfo())
       void dispatch(fetchEstimationNewPair())
     }
   }, [dispatch, exchangeType, isFixedRate, toCurrency, fromCurrency, isLoadingCalculator])
