@@ -45,15 +45,15 @@ export const calculatorSlice = createSlice({
   reducers: {
     setFromAmount: (state, action: PayloadAction<string>) => {
       state.amounts.from = action.payload
-      state.flowInfo.type = ExchangeType.Direct
+      // state.flowInfo.type = ExchangeType.Direct
     },
     setIsFromInputTouched: (state, action: PayloadAction<boolean>) => {
       state.ui.isFromInputTouched = action.payload
     },
     setToAmount: (state, action: PayloadAction<string>) => {
       state.amounts.to = action.payload
-      state.flowInfo.type = ExchangeType.Reverse
-      state.flowInfo.flow = FlowType.FixedRate
+      // state.flowInfo.type = ExchangeType.Reverse
+      // state.flowInfo.flow = FlowType.FixedRate
     },
     setFromCurrency: (state, action: PayloadAction<string>) => {
       state.currencies.from = action.payload
@@ -83,6 +83,10 @@ export const calculatorSlice = createSlice({
     },
     resetErrors: (state) => {
       state.errorMessage = ''
+    },
+    resetFixedRateInfo: (state) => {
+      state.flowInfo.rateId = ''
+      state.flowInfo.validUntil = ''
     },
     resetExchangeState: () => initialState,
   },
@@ -162,6 +166,7 @@ export const {
   setFlow,
   setExchangeType,
   resetExchangeState,
+  resetFixedRateInfo,
   resetErrors,
 } = calculatorSlice.actions
 

@@ -7,14 +7,7 @@ import ClickOutsideWrapper from 'app/components/click-outside-wrapper'
 import CurrencySelect from 'app/components/currency-select'
 import Loader from 'app/components/loader'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import {
-  resetErrors,
-  setFromAmount,
-  setFromCurrency,
-  setIsFromInputTouched,
-  setToAmount,
-  setToCurrency,
-} from 'features/calculator/calculator-slice'
+import { resetErrors, setFromAmount, setFromCurrency, setToCurrency } from 'features/calculator/calculator-slice'
 import CalculatorInput from 'features/calculator/components/calculator-input'
 import FixedRate from 'features/calculator/components/fixed-rate'
 import SwapButton from 'features/calculator/components/swap-button'
@@ -29,9 +22,8 @@ import {
   selectExchangeType,
   selectIsFixedRate,
 } from 'features/calculator/selectors'
-import { fetchEstimationAmount, fetchEstimationNewPair, initCalculator } from 'features/calculator/thunks'
+import { changeFromAmount, changeToAmount, fetchEstimationNewPair, initCalculator } from 'features/calculator/thunks'
 import { BREAKPOINTS } from 'helpers/constants'
-import validateNumericString from 'helpers/validate-numeric-string'
 import { ExchangeType } from 'types/exchange'
 
 const LoaderWrapper = styled.div`
@@ -168,12 +160,7 @@ const Calculator: React.FC = () => {
     (event: ChangeEvent<HTMLInputElement>) => {
       const { value } = event.currentTarget
 
-      if (validateNumericString(value, Number(fromCurrencyInfo?.decimals))) {
-        dispatch(setFromAmount(value))
-        dispatch(setIsFromInputTouched(true))
-        void dispatch(resetErrors())
-        void dispatch(fetchEstimationAmount())
-      }
+      void dispatch(changeFromAmount({ amount: value, currencyInfo: fromCurrencyInfo }))
     },
     [dispatch, fromCurrencyInfo],
   )
@@ -182,13 +169,9 @@ const Calculator: React.FC = () => {
     (event: ChangeEvent<HTMLInputElement>) => {
       const { value } = event.currentTarget
 
-      if (validateNumericString(value, Number(toCurrencyInfo?.decimals))) {
-        dispatch(setToAmount(value))
-        void dispatch(resetErrors())
-        void dispatch(fetchEstimationAmount())
-      }
+      void dispatch(changeToAmount({ amount: value, currencyInfo: fromCurrencyInfo }))
     },
-    [dispatch, toCurrencyInfo],
+    [dispatch, fromCurrencyInfo],
   )
 
   const handleFromCurrencySelect = useCallback(
@@ -241,9 +224,11 @@ const Calculator: React.FC = () => {
   }, [dispatch])
 
   useEffect(() => {
-    void dispatch(resetErrors())
-    void dispatch(fetchEstimationNewPair())
-  }, [dispatch, exchangeType, toCurrency, fromCurrency, isFixedRate])
+    if (!isLoadingCalculator) {
+      void dispatch(resetErrors())
+      void dispatch(fetchEstimationNewPair())
+    }
+  }, [dispatch, exchangeType, isFixedRate, toCurrency, fromCurrency, isLoadingCalculator])
 
   if (isLoadingCalculator) {
     return (

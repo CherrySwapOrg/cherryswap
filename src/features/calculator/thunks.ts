@@ -2,6 +2,15 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import type { AppState } from 'app/store'
+import {
+  resetErrors,
+  resetFixedRateInfo,
+  setExchangeType,
+  setFlow,
+  setFromAmount,
+  setIsFromInputTouched,
+  setToAmount,
+} from 'features/calculator/calculator-slice'
 import { getCurrenciesInfo, getEstimatedAmount, getPairInfo, sendExchangeInfo } from 'features/calculator/client'
 import {
   selectCurrencyInfo,
@@ -12,7 +21,8 @@ import {
 import { CurrencyInfo, GetEstimatedAmountResponse, GetPairInfoResponse } from 'features/calculator/types'
 import createDebouncedAsyncThunk from 'features/create-debounced-async-thunk'
 import { setExchangeInfo } from 'features/exchange-status/exchange-status-slice'
-import { lte } from 'lib/bn'
+import validateNumericString from 'helpers/validate-numeric-string'
+import { eq, formatInputValue, lte } from 'lib/bn'
 import { ExchangeType, FlowType } from 'types/exchange'
 
 export const getCurrencyInfo = createAsyncThunk<{ currenciesInfo: Record<string, CurrencyInfo> }>(
@@ -147,5 +157,58 @@ export const initCalculator = createAsyncThunk('calculator/initCalculator', asyn
   const { dispatch } = thunkAPI
 
   await dispatch(getCurrencyInfo())
-  await dispatch(fetchEstimationNewPair())
 })
+
+export const changeFromAmount = createAsyncThunk<void, { amount: string; currencyInfo: CurrencyInfo }>(
+  'exchange/changeFromAmount',
+  ({ amount, currencyInfo }, thunkAPI) => {
+    const { dispatch } = thunkAPI
+
+    dispatch(resetErrors())
+    void dispatch(setIsFromInputTouched(true))
+    void dispatch(setExchangeType(ExchangeType.Direct))
+
+    const formattedAmount = formatInputValue(amount)
+
+    if (formattedAmount === '' || eq(formattedAmount, 0)) {
+      dispatch(setFromAmount(formattedAmount))
+      dispatch(setToAmount(''))
+      dispatch(resetFixedRateInfo())
+
+      return
+    }
+
+    if (validateNumericString(formattedAmount, Number(currencyInfo?.decimals))) {
+      void dispatch(setFromAmount(formattedAmount))
+
+      void dispatch(fetchEstimationAmount())
+    }
+  },
+)
+
+export const changeToAmount = createAsyncThunk<void, { amount: string; currencyInfo: CurrencyInfo }>(
+  'exchange/changeFromAmount',
+  ({ amount, currencyInfo }, thunkAPI) => {
+    const { dispatch } = thunkAPI
+
+    dispatch(resetErrors())
+    void dispatch(setExchangeType(ExchangeType.Reverse))
+    void dispatch(setFlow(FlowType.FixedRate))
+
+    const formattedAmount = formatInputValue(amount)
+
+    if (formattedAmount === '' || eq(formattedAmount, 0)) {
+      dispatch(setFromAmount(''))
+      dispatch(setToAmount(formattedAmount))
+      dispatch(resetFixedRateInfo())
+
+      return
+    }
+
+    if (validateNumericString(formattedAmount, Number(currencyInfo?.decimals))) {
+      void dispatch(setToAmount(formattedAmount))
+
+      void dispatch(fetchEstimationAmount())
+    }
+  },
+)
