@@ -7,7 +7,13 @@ import ClickOutsideWrapper from 'app/components/click-outside-wrapper'
 import CurrencySelect from 'app/components/currency-select'
 import Loader from 'app/components/loader'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import { resetErrors, setFromAmount, setFromCurrency, setToCurrency } from 'features/calculator/calculator-slice'
+import {
+  resetErrors,
+  setFromAmount,
+  setFromCurrency,
+  setToAmount,
+  setToCurrency,
+} from 'features/calculator/calculator-slice'
 import CalculatorInput from 'features/calculator/components/calculator-input'
 import FixedRate from 'features/calculator/components/fixed-rate'
 import SwapButton from 'features/calculator/components/swap-button'
@@ -222,6 +228,26 @@ const Calculator: React.FC = () => {
   useEffect(() => {
     void dispatch(initCalculator())
   }, [dispatch])
+
+  useEffect(() => {
+    if (exchangeType === ExchangeType.Direct && !fromAmount) {
+      const amount = currenciesInfo[fromCurrency]?.manualDefaultValue || currenciesInfo[fromCurrency]?.defaultValue
+
+      if (amount) {
+        dispatch(setFromAmount(String(amount)))
+      }
+
+      return
+    }
+
+    if (!toAmount) {
+      const amount = currenciesInfo[toCurrency]?.manualDefaultValue || currenciesInfo[toCurrency]?.defaultValue
+
+      if (amount) {
+        dispatch(setToAmount(String(amount)))
+      }
+    }
+  }, [isLoadingCalculator])
 
   useEffect(() => {
     if (!isLoadingCalculator) {
