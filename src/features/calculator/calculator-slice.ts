@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { fetchEstimationAmount, fetchPairInfo, getCurrencyInfo } from 'features/calculator/thunks'
 import { CalculatorSlice } from 'features/calculator/types'
+import { dividedBy, getFormattedLargeValue } from 'lib/bn'
 import { ExchangeType, FlowType } from 'types/exchange'
 
 const initialState: CalculatorSlice = {
@@ -108,10 +109,10 @@ export const calculatorSlice = createSlice({
 
         if (state.flowInfo.type === ExchangeType.Reverse) {
           state.amounts.from = String(fromAmount || '')
-          state.estimatedRate = (Number(state.amounts.to) / Number(fromAmount || 1)).toFixed(2)
+          state.estimatedRate = getFormattedLargeValue(dividedBy(state.amounts.to || 0, fromAmount || 1).toString())
         } else {
           state.amounts.to = String(toAmount || '')
-          state.estimatedRate = (Number(toAmount || 0) / Number(state.amounts.from)).toFixed(2)
+          state.estimatedRate = getFormattedLargeValue(dividedBy(toAmount || 0, state.amounts.from || 1).toString())
         }
 
         state.flowInfo.rateId = action.payload.rateId || ''
@@ -120,6 +121,7 @@ export const calculatorSlice = createSlice({
       } else {
         state.amounts.to = ''
         state.amounts.from = ''
+        state.estimatedRate = ''
       }
     })
     builder.addCase(fetchEstimationAmount.pending, (state) => {
