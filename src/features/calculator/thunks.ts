@@ -22,7 +22,7 @@ import { CurrencyInfo, GetEstimatedAmountResponse, GetPairInfoResponse } from 'f
 import createDebouncedAsyncThunk from 'features/create-debounced-async-thunk'
 import { setExchangeInfo } from 'features/exchange-status/exchange-status-slice'
 import validateNumericString from 'helpers/validate-numeric-string'
-import { eq, formatInputValue, lte } from 'lib/bn'
+import { eq, formatInputValue, gte, lte } from 'lib/bn'
 import { ExchangeType, FlowType } from 'types/exchange'
 
 export const getCurrencyInfo = createAsyncThunk<{ currenciesInfo: Record<string, CurrencyInfo> }>(
@@ -80,17 +80,20 @@ export const fetchEstimationAmount = createDebouncedAsyncThunk<GetEstimatedAmoun
   async (_, thunkAPI) => {
     const state = thunkAPI.getState() as AppState
 
-    const { fromAmount, toAmount } = selectExchangeAmounts(state)
+    const { fromAmount, toAmount, minAmount, maxAmount } = selectExchangeAmounts(state)
     const { fromCurrency, toCurrency } = selectExchangeCurrencies(state)
 
     const toCurrencyInfo = selectCurrencyInfo(state, toCurrency)
     const fromCurrencyInfo = selectCurrencyInfo(state, fromCurrency)
 
-    if (
-      (state.calculator.flowInfo.type === ExchangeType.Direct && (!fromAmount || lte(fromAmount, 0))) ||
-      (state.calculator.flowInfo.type === ExchangeType.Reverse && (!toAmount || lte(toAmount, 0)))
-    ) {
+    const checkedAmount = state.calculator.flowInfo.type === ExchangeType.Direct ? fromAmount : toAmount
+
+    if (!checkedAmount || lte(checkedAmount, 0)) {
       return
+    }
+
+    if ((minAmount && lte(checkedAmount, minAmount)) || (maxAmount && gte(checkedAmount, maxAmount))) {
+      return thunkAPI.rejectWithValue('Entered amount out of range')
     }
 
     try {
