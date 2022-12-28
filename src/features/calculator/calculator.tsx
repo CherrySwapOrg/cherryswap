@@ -56,15 +56,22 @@ const Row = styled.div`
 
 const InfoInnerWrapper = styled.div`
   display: flex;
+  margin-right: 8px;
   flex-direction: column;
   gap: 10px;
 `
 
-const UppercaseText = styled.span<{ isPrimary?: boolean }>`
+const UppercaseText = styled.div<{ isPrimary?: boolean }>`
+  display: flex;
+  flex-wrap: wrap;
   color: ${({ theme, isPrimary }): string => (isPrimary ? theme.colors.primary : theme.colors.text.dark)};
   font-weight: ${({ isPrimary }): number => (isPrimary ? 700 : 500)};
   text-transform: uppercase;
   align-self: center;
+`
+
+const NoWrap = styled.span`
+  white-space: nowrap;
 `
 
 const InfoText = styled.span`
@@ -302,7 +309,12 @@ const Calculator: React.FC = () => {
                 {isLoadingToInput || isLoadingFromInput ? (
                   <Loader size='16px' />
                 ) : (
-                  `1 ${fromCurrencyInfo?.ticker} ~ ${estimatedRate || '-'} ${toCurrencyInfo?.ticker}`
+                  <>
+                    <NoWrap>1 ${fromCurrencyInfo?.ticker}</NoWrap>
+                    <NoWrap>
+                      ~ ${estimatedRate || '-'} ${toCurrencyInfo?.ticker}
+                    </NoWrap>
+                  </>
                 )}
               </UppercaseText>
               <FixedRate />

@@ -21,6 +21,7 @@ const InnerWrapper = styled.div`
 `
 
 const WrapperPressedImage = styled.div`
+  min-width: 16px;
   cursor: pointer;
 `
 
@@ -32,6 +33,7 @@ const Timer = styled.span`
   display: flex;
   font-size: 12px;
   font-weight: 700;
+  min-width: 60px;
   padding: 2px 4px;
 `
 
