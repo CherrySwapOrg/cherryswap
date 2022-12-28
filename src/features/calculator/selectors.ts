@@ -64,6 +64,12 @@ export const selectExchangeType = createSelector(
   ({ flowInfo }) => flowInfo.type,
 )
 
+export const selectExchangeFixedRateId = createSelector(
+  (state: AppState) => state.calculator,
+  (_: AppState) => _,
+  ({ flowInfo }) => flowInfo.rateId,
+)
+
 export const selectExchangeError = createSelector(
   (state: AppState) => state.calculator,
   (_: AppState) => _,

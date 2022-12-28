@@ -312,7 +312,7 @@ const Calculator: React.FC = () => {
                   <>
                     <NoWrap>1 ${fromCurrencyInfo?.ticker}</NoWrap>
                     <NoWrap>
-                      ~ ${estimatedRate || '-'} ${toCurrencyInfo?.ticker}
+                      ~ {estimatedRate || '-'} {toCurrencyInfo?.ticker}
                     </NoWrap>
                   </>
                 )}
