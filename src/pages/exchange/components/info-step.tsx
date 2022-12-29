@@ -15,6 +15,7 @@ import {
   selectCalculatorUiState,
   selectCurrencyInfo,
   selectExchangeAddresses,
+  selectExchangeAmounts,
   selectExchangeCurrencies,
   selectExchangeError,
 } from 'features/calculator/selectors'
@@ -143,6 +144,7 @@ const InfoStep: React.FC<Props> = ({ onNextPress }) => {
 
   const { errorMessage } = useAppSelector(selectExchangeError)
   const { toAddress, refundAddress } = useAppSelector(selectExchangeAddresses)
+  const { fromAmount, toAmount } = useAppSelector(selectExchangeAmounts)
   const { fromCurrency, toCurrency } = useAppSelector(selectExchangeCurrencies)
   const { isLoadingFromInput, isLoadingToInput, isLoadingEstimation } = useAppSelector(selectCalculatorUiState)
 
@@ -239,7 +241,7 @@ const InfoStep: React.FC<Props> = ({ onNextPress }) => {
   )
 
   const handleNextStepPress = useCallback(() => {
-    if (errorMessage || isLoadingEstimation || isLoadingFromInput || isLoadingToInput) {
+    if (errorMessage || isLoadingEstimation || isLoadingFromInput || isLoadingToInput || !fromAmount || !toAmount) {
       return
     }
 
@@ -270,6 +272,8 @@ const InfoStep: React.FC<Props> = ({ onNextPress }) => {
     isLoadingFromInput,
     isLoadingToInput,
     isLoadingEstimation,
+    toAmount,
+    fromAmount,
   ])
 
   return (

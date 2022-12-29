@@ -204,3 +204,21 @@ export const getFormattedLargeValue = (value: string): string => {
 
   return value
 }
+
+export const formatInputValue = (value: string): string => {
+  let formattedValue = value.replace('~ ', '')
+
+  if (/,/.test(formattedValue)) {
+    formattedValue = value.replace(',', '.')
+  }
+
+  if (formattedValue.startsWith('.')) {
+    return '0.'
+  }
+
+  if (formattedValue.startsWith('0') && !formattedValue.startsWith('0.')) {
+    return new BN(formattedValue).toString()
+  }
+
+  return formattedValue
+}

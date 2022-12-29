@@ -7,7 +7,7 @@ import ClickOutsideWrapper from 'app/components/click-outside-wrapper'
 import HoverPopUp from 'app/components/hover-pop-up'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { setExchangeType, setFlow } from 'features/calculator/calculator-slice'
-import { selectCalculatorUiState, selectIsFixedRate } from 'features/calculator/selectors'
+import { selectCalculatorUiState, selectExchangeFixedRateId, selectIsFixedRate } from 'features/calculator/selectors'
 import useFixedRateTimer from 'hooks/use-fixed-rate-timer'
 import { ExchangeType, FlowType } from 'types/exchange'
 
@@ -21,6 +21,7 @@ const InnerWrapper = styled.div`
 `
 
 const WrapperPressedImage = styled.div`
+  min-width: 16px;
   cursor: pointer;
 `
 
@@ -32,6 +33,7 @@ const Timer = styled.span`
   display: flex;
   font-size: 12px;
   font-weight: 700;
+  min-width: 60px;
   padding: 2px 4px;
 `
 
@@ -40,6 +42,7 @@ const FixedRate: React.FC = () => {
   const fixedRateTimer = useFixedRateTimer()
   const isFixedRate = useAppSelector(selectIsFixedRate)
   const { isLoadingEstimation } = useAppSelector(selectCalculatorUiState)
+  const fixedExchangeId = useAppSelector(selectExchangeFixedRateId)
 
   const dispatch = useAppDispatch()
 
@@ -60,10 +63,12 @@ const FixedRate: React.FC = () => {
           <WrapperPressedImage onClick={handleFixedRatePress}>
             <Image width={16} height={20} src='/icons/fixed-rate-enabled-icon.svg' alt='Lock' />
           </WrapperPressedImage>
-          <Timer>
-            <Image width={16} height={16} src='/icons/timer-icon.svg' alt='Timer' />
-            {!isLoadingEstimation && fixedRateTimer}
-          </Timer>
+          {fixedExchangeId && (
+            <Timer>
+              <Image width={16} height={16} src='/icons/timer-icon.svg' alt='Timer' />
+              {!isLoadingEstimation && fixedRateTimer}
+            </Timer>
+          )}
         </InnerWrapper>
       ) : (
         <WrapperPressedImage onClick={handleFixedRatePress}>
