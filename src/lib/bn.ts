@@ -2,8 +2,6 @@ import BN, { BigNumber } from 'bignumber.js'
 
 import { ConfigService } from 'services/ConfigService'
 
-const EXPONENT_PATTERN = /[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)/g
-
 BN.config({
   DECIMAL_PLACES: 20,
   EXPONENTIAL_AT: 30,
@@ -129,48 +127,8 @@ export const formatAmount = (amount: BN.Value, decimals: number): string => {
   return value
 }
 
-export const toFixedPrecision = (val: BN.Value, decimals: string): string => {
-  try {
-    if (!isNumberOrNumberString(decimals)) {
-      throw new Error(`Decimals are not provided or invalid. Got ${decimals}`)
-    }
-
-    const isExponent = EXPONENT_PATTERN.test(decimals)
-
-    if (isExponent) {
-      const precision = new BN(10).pow(new BN(decimals).dp())
-
-      return new BN(dividedBy(val, precision)).toString()
-    }
-
-    const result = new BN(val).toFixed(+decimals)
-
-    return plus(result, '0').toString()
-  } catch (err) {
-    return '0'
-  }
-}
-
 export const truncateAmount = (amount: BN.Value, decimals: number): string =>
   plus(new BN(amount).decimalPlaces(decimals, 1), '0').toString()
-
-export const toFormatAmount = (val: BN.Value, decimals: number): string => {
-  try {
-    if (val === undefined || val === null) {
-      return '...'
-    }
-
-    let str = val
-
-    if (decimals !== undefined) {
-      str = toFixedPrecision(val, decimals.toString())
-    }
-
-    return new BN(str).toFormat()
-  } catch (err) {
-    return '0'
-  }
-}
 
 export const formatNumber = (val: BN.Value): string => {
   try {

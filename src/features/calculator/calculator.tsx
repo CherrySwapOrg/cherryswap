@@ -12,7 +12,6 @@ import {
   resetFixedRateInfo,
   setFromAmount,
   setFromCurrency,
-  setToAmount,
   setToCurrency,
 } from 'features/calculator/calculator-slice'
 import CalculatorInput from 'features/calculator/components/calculator-input'
@@ -236,26 +235,6 @@ const Calculator: React.FC = () => {
   useEffect(() => {
     void dispatch(initCalculator())
   }, [dispatch])
-
-  useEffect(() => {
-    if (exchangeType === ExchangeType.Direct && !fromAmount) {
-      const amount = currenciesInfo[fromCurrency]?.manualDefaultValue || currenciesInfo[fromCurrency]?.defaultValue
-
-      if (amount) {
-        dispatch(setFromAmount(String(amount)))
-      }
-
-      return
-    }
-
-    if (!toAmount) {
-      const amount = currenciesInfo[toCurrency]?.manualDefaultValue || currenciesInfo[toCurrency]?.defaultValue
-
-      if (amount) {
-        dispatch(setToAmount(String(amount)))
-      }
-    }
-  }, [isLoadingCalculator])
 
   useEffect(() => {
     if (!isLoadingCalculator) {
