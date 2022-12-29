@@ -160,6 +160,27 @@ export const initCalculator = createAsyncThunk('calculator/initCalculator', asyn
   const { dispatch } = thunkAPI
 
   await dispatch(getCurrencyInfo())
+
+  const state = thunkAPI.getState() as AppState
+  const {
+    calculator: { flowInfo, amounts, currenciesInfo, currencies },
+  } = state
+
+  if (flowInfo.type === ExchangeType.Direct && !amounts.from) {
+    const amount = currenciesInfo[currencies.from]?.manualDefaultValue || currenciesInfo[currencies.from]?.defaultValue
+
+    if (amount) {
+      void dispatch(setFromAmount(String(amount)))
+    }
+  }
+
+  if (flowInfo.type === ExchangeType.Reverse && !amounts.to) {
+    const amount = currenciesInfo[currencies.to]?.manualDefaultValue || currenciesInfo[currencies.to]?.defaultValue
+
+    if (amount) {
+      void dispatch(setToAmount(String(amount)))
+    }
+  }
 })
 
 export const changeFromAmount = createAsyncThunk<void, { amount: string; currencyInfo: CurrencyInfo }>(
