@@ -93,7 +93,7 @@ export const selectTimerInfoFromTimestamp = createSelector(
 
     return {
       displayDate: '',
-      duration: -1,
+      duration: null,
     }
   },
 )

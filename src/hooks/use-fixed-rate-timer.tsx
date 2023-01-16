@@ -16,7 +16,7 @@ const useFixedRateTimer = (): string => {
   const timerInfo = useAppSelector((state) => selectTimerInfoFromTimestamp(state, timer))
 
   useEffect(() => {
-    if (lte(timerInfo.duration, 0)) {
+    if (timerInfo.duration && lte(timerInfo.duration, 0)) {
       void dispatch(fetchEstimationAmount())
     }
   }, [dispatch, timerInfo.duration])
