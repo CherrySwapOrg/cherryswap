@@ -9,6 +9,7 @@ import { reverseExchange } from 'features/calculator/calculator-slice'
 
 const SwapButtonWrapper = styled(Button)`
   width: 32px;
+  min-width: 32px;
   height: 32px;
   border-radius: 50%;
 `

@@ -8,10 +8,10 @@ import CurrencySelect from 'app/components/currency-select'
 import Loader from 'app/components/loader'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import {
+  resetErrors,
+  resetFixedRateInfo,
   setFromAmount,
   setFromCurrency,
-  setIsFromInputTouched,
-  setToAmount,
   setToCurrency,
 } from 'features/calculator/calculator-slice'
 import CalculatorInput from 'features/calculator/components/calculator-input'
@@ -28,9 +28,8 @@ import {
   selectExchangeType,
   selectIsFixedRate,
 } from 'features/calculator/selectors'
-import { fetchEstimationAmount, fetchEstimationNewPair, initCalculator } from 'features/calculator/thunks'
+import { changeFromAmount, changeToAmount, fetchEstimationNewPair, initCalculator } from 'features/calculator/thunks'
 import { BREAKPOINTS } from 'helpers/constants'
-import validateNumericString from 'helpers/validate-numeric-string'
 import { ExchangeType } from 'types/exchange'
 
 const LoaderWrapper = styled.div`
@@ -56,15 +55,22 @@ const Row = styled.div`
 
 const InfoInnerWrapper = styled.div`
   display: flex;
+  margin-right: 8px;
   flex-direction: column;
   gap: 10px;
 `
 
-const UppercaseText = styled.span<{ isPrimary?: boolean }>`
+const UppercaseText = styled.div<{ isPrimary?: boolean }>`
+  display: flex;
+  flex-wrap: wrap;
   color: ${({ theme, isPrimary }): string => (isPrimary ? theme.colors.primary : theme.colors.text.dark)};
   font-weight: ${({ isPrimary }): number => (isPrimary ? 700 : 500)};
   text-transform: uppercase;
   align-self: center;
+`
+
+const NoWrap = styled.span`
+  white-space: nowrap;
 `
 
 const InfoText = styled.span`
@@ -140,10 +146,12 @@ const Calculator: React.FC = () => {
     () => exchangeType === ExchangeType.Reverse && !!errorMessage,
     [exchangeType, errorMessage],
   )
+  const checkedAmount = useMemo(
+    () => (exchangeType === ExchangeType.Direct ? fromAmount : toAmount),
+    [exchangeType, fromAmount, toAmount],
+  )
 
   const formattedErrorMessage = useMemo(() => {
-    const checkedAmount = exchangeType === ExchangeType.Direct ? fromAmount : toAmount
-
     if (checkedAmount && minAmount && Number(checkedAmount) < minAmount) {
       return `Minimum amount is ${minAmount} ${
         isErrorFromInput ? fromCurrencyInfo?.ticker?.toUpperCase() : toCurrencyInfo?.ticker?.toUpperCase()
@@ -157,17 +165,7 @@ const Calculator: React.FC = () => {
     }
 
     return errorMessage
-  }, [
-    errorMessage,
-    minAmount,
-    maxAmount,
-    isErrorFromInput,
-    fromCurrencyInfo,
-    toCurrencyInfo,
-    fromAmount,
-    toAmount,
-    exchangeType,
-  ])
+  }, [errorMessage, minAmount, maxAmount, isErrorFromInput, fromCurrencyInfo, toCurrencyInfo, checkedAmount])
 
   const dispatch = useAppDispatch()
 
@@ -175,11 +173,7 @@ const Calculator: React.FC = () => {
     (event: ChangeEvent<HTMLInputElement>) => {
       const { value } = event.currentTarget
 
-      if (validateNumericString(value, Number(fromCurrencyInfo?.decimals))) {
-        dispatch(setFromAmount(value))
-        dispatch(setIsFromInputTouched(true))
-        void dispatch(fetchEstimationAmount())
-      }
+      void dispatch(changeFromAmount({ amount: value, currencyInfo: fromCurrencyInfo }))
     },
     [dispatch, fromCurrencyInfo],
   )
@@ -188,12 +182,9 @@ const Calculator: React.FC = () => {
     (event: ChangeEvent<HTMLInputElement>) => {
       const { value } = event.currentTarget
 
-      if (validateNumericString(value, Number(toCurrencyInfo?.decimals))) {
-        dispatch(setToAmount(value))
-        void dispatch(fetchEstimationAmount())
-      }
+      void dispatch(changeToAmount({ amount: value, currencyInfo: fromCurrencyInfo }))
     },
-    [dispatch, toCurrencyInfo],
+    [dispatch, fromCurrencyInfo],
   )
 
   const handleFromCurrencySelect = useCallback(
@@ -246,8 +237,12 @@ const Calculator: React.FC = () => {
   }, [dispatch])
 
   useEffect(() => {
-    void dispatch(fetchEstimationNewPair())
-  }, [dispatch, exchangeType, toCurrency, fromCurrency, isFixedRate])
+    if (!isLoadingCalculator) {
+      void dispatch(resetErrors())
+      void dispatch(resetFixedRateInfo())
+      void dispatch(fetchEstimationNewPair())
+    }
+  }, [dispatch, exchangeType, isFixedRate, toCurrency, fromCurrency, isLoadingCalculator])
 
   if (isLoadingCalculator) {
     return (
@@ -293,7 +288,12 @@ const Calculator: React.FC = () => {
                 {isLoadingToInput || isLoadingFromInput ? (
                   <Loader size='16px' />
                 ) : (
-                  `1 ${fromCurrencyInfo?.ticker} ~ ${estimatedRate || '-'} ${toCurrencyInfo?.ticker}`
+                  <>
+                    <NoWrap>1 {fromCurrencyInfo?.ticker}</NoWrap>
+                    <NoWrap>
+                      ~ {estimatedRate || '-'} {toCurrencyInfo?.ticker}
+                    </NoWrap>
+                  </>
                 )}
               </UppercaseText>
               <FixedRate />

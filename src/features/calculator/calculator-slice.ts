@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { fetchEstimationAmount, fetchPairInfo, getCurrencyInfo } from 'features/calculator/thunks'
 import { CalculatorSlice } from 'features/calculator/types'
+import { dividedBy, getFormattedLargeValue } from 'lib/bn'
 import { ExchangeType, FlowType } from 'types/exchange'
 
 const initialState: CalculatorSlice = {
@@ -45,15 +46,12 @@ export const calculatorSlice = createSlice({
   reducers: {
     setFromAmount: (state, action: PayloadAction<string>) => {
       state.amounts.from = action.payload
-      state.flowInfo.type = ExchangeType.Direct
     },
     setIsFromInputTouched: (state, action: PayloadAction<boolean>) => {
       state.ui.isFromInputTouched = action.payload
     },
     setToAmount: (state, action: PayloadAction<string>) => {
       state.amounts.to = action.payload
-      state.flowInfo.type = ExchangeType.Reverse
-      state.flowInfo.flow = FlowType.FixedRate
     },
     setFromCurrency: (state, action: PayloadAction<string>) => {
       state.currencies.from = action.payload
@@ -81,6 +79,13 @@ export const calculatorSlice = createSlice({
     setExchangeType: (state, action: PayloadAction<ExchangeType>) => {
       state.flowInfo.type = action.payload
     },
+    resetErrors: (state) => {
+      state.errorMessage = ''
+    },
+    resetFixedRateInfo: (state) => {
+      state.flowInfo.rateId = ''
+      state.flowInfo.validUntil = ''
+    },
     resetExchangeState: () => initialState,
   },
   extraReducers: (builder) => {
@@ -92,25 +97,29 @@ export const calculatorSlice = createSlice({
       state.ui.isLoadingCalculator = true
     })
     builder.addCase(fetchEstimationAmount.fulfilled, (state, action) => {
-      const { toAmount, fromAmount } = action.payload
+      state.ui.isLoadingFromInput = false
+      state.ui.isLoadingToInput = false
+      state.ui.isLoadingEstimation = false
 
-      if (state.flowInfo.type === ExchangeType.Reverse) {
-        state.ui.isLoadingFromInput = false
-        state.amounts.from = String(fromAmount || '')
-        state.estimatedRate = (Number(state.amounts.to) / Number(fromAmount || 1)).toFixed(2)
-      } else {
-        state.ui.isLoadingToInput = false
-        state.amounts.to = String(toAmount || '')
-        state.estimatedRate = (Number(toAmount || 0) / Number(state.amounts.from)).toFixed(2)
-      }
+      if (action.payload) {
+        const { toAmount, fromAmount } = action.payload
 
-      if (state.flowInfo.flow === FlowType.FixedRate) {
+        if (state.flowInfo.type === ExchangeType.Reverse) {
+          state.amounts.from = String(fromAmount || '')
+          state.estimatedRate = getFormattedLargeValue(dividedBy(state.amounts.to || 0, fromAmount || 1).toString())
+        } else {
+          state.amounts.to = String(toAmount || '')
+          state.estimatedRate = getFormattedLargeValue(dividedBy(toAmount || 0, state.amounts.from || 1).toString())
+        }
+
         state.flowInfo.rateId = action.payload.rateId || ''
         state.flowInfo.validUntil = action.payload.validUntil || ''
+        state.estimatedArrivalTime = action.payload.transactionSpeedForecast || '10 - 60'
+      } else {
+        state.amounts.to = ''
+        state.amounts.from = ''
+        state.estimatedRate = ''
       }
-
-      state.estimatedArrivalTime = '10 - 60'
-      state.ui.isLoadingEstimation = false
     })
     builder.addCase(fetchEstimationAmount.pending, (state) => {
       state.ui.isLoadingEstimation = true
@@ -156,6 +165,8 @@ export const {
   setFlow,
   setExchangeType,
   resetExchangeState,
+  resetFixedRateInfo,
+  resetErrors,
 } = calculatorSlice.actions
 
 export const calculatorReducer = calculatorSlice.reducer
