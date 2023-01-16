@@ -30,12 +30,6 @@ jobs:
       - name: Save image to tar
         run: docker save ${{ env.IMAGE_NAME }} -o "${{ env.IMAGE_NAME }}.tar"
 
-      - name: Upload tar file
-        uses: actions/upload-artifact@v2
-        with:
-          name: '${{ env.IMAGE_NAME }}.tar'
-          path: '${{ env.IMAGE_NAME }}.tar'
-
       - name: Copy single file to remote
         uses: garygrossgarten/github-action-scp@release
         with:
