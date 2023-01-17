@@ -187,7 +187,13 @@ const Footer: React.FC = () => {
       <InnerContainer>
         <LeftColumn>
           <Link href='/'>
-            <Logo src='/icons/dark-logo.svg' fontSize='20px' logoSize={53} textColor={theme.colors.primaryOnDark} />
+            <Logo
+              src='/icons/dark-logo.svg'
+              fontSize='20px'
+              logoSize={53}
+              textColor={theme.colors.primaryOnDark}
+              zIndex={2}
+            />
           </Link>
           <SocialLinksWrapper>
             <SocialLink href='/'>
