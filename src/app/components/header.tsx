@@ -98,6 +98,7 @@ const Header: React.FC = () => {
         <Logo
           src={isOpened ? '/icons/dark-logo.svg' : '/icons/light-logo.svg'}
           textColor={isOpened ? theme.colors.primaryOnDark : theme.colors.text.dark}
+          zIndex={10}
         />
       </Link>
       <DrawerMenuButton onClick={toggleMenuOpened}>
