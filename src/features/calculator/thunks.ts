@@ -204,7 +204,6 @@ export const changeFromAmount = createAsyncThunk<void, { amount: string; currenc
 
     if (validateNumericString(formattedAmount, Number(currencyInfo?.decimals))) {
       void dispatch(setFromAmount(formattedAmount))
-
       void dispatch(fetchEstimationAmount())
     }
   },
@@ -231,7 +230,6 @@ export const changeToAmount = createAsyncThunk<void, { amount: string; currencyI
 
     if (validateNumericString(formattedAmount, Number(currencyInfo?.decimals))) {
       void dispatch(setToAmount(formattedAmount))
-
       void dispatch(fetchEstimationAmount())
     }
   },
