@@ -1,10 +1,12 @@
 import React from 'react'
 
 import styled from '@emotion/styled'
+import { useRouter } from 'next/router'
 
 import Button from 'app/components/button'
-import Link from 'app/components/link'
+import { useAppSelector } from 'app/store'
 import Calculator from 'features/calculator/calculator'
+import { selectCalculatorUiState, selectExchangeAmounts, selectExchangeError } from 'features/calculator/selectors'
 import { BREAKPOINTS } from 'helpers/constants'
 
 const Wrapper = styled.div`
@@ -39,13 +41,25 @@ const ExchangeButton = styled(Button)`
   width: 100%;
 `
 
-const CalculatorForm: React.FC = () => (
-  <Wrapper>
-    <Calculator />
-    <Link href='/exchange'>
-      <ExchangeButton>Exchange</ExchangeButton>
-    </Link>
-  </Wrapper>
-)
+const CalculatorForm: React.FC = () => {
+  const { errorMessage } = useAppSelector(selectExchangeError)
+  const { isLoadingFromInput, isLoadingToInput, isLoadingEstimation } = useAppSelector(selectCalculatorUiState)
+  const { fromAmount, toAmount } = useAppSelector(selectExchangeAmounts)
+  const router = useRouter()
+  const handleNextStepPress = () => {
+    if (errorMessage || isLoadingEstimation || isLoadingFromInput || isLoadingToInput || !fromAmount || !toAmount) {
+      return
+    }
+
+    void router.replace('/exchange')
+  }
+
+  return (
+    <Wrapper>
+      <Calculator />
+      <ExchangeButton onClick={handleNextStepPress}>Exchange</ExchangeButton>
+    </Wrapper>
+  )
+}
 
 export default CalculatorForm
