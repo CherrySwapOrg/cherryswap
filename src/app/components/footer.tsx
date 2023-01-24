@@ -205,6 +205,9 @@ const Footer: React.FC = () => {
             <SocialLink href='/'>
               <Image width={20} height={20} src='/icons/social/instagram.svg' alt='Instagram' />
             </SocialLink>
+            <SocialLink href='https://t.me/cherryswapCommunity'>
+              <Image width={20} height={20} src='/icons/social/telegram.svg' alt='Telegram' />
+            </SocialLink>
           </SocialLinksWrapper>
           <MobileDivider />
         </LeftColumn>
@@ -219,7 +222,6 @@ const Footer: React.FC = () => {
           <InnerColumn>
             <NavigationHeader>Support</NavigationHeader>
             <NavigationLink href='/'>How it Works</NavigationLink>
-            <NavigationLink href='/'>KYC/AML</NavigationLink>
             <StatusLink href='/exchange-status'>
               Transaction Status{' '}
               <Image width={20} height={20} src='/icons/arrow-circle-right-icon.svg' alt='Arrow right' />
@@ -241,6 +243,9 @@ const Footer: React.FC = () => {
           <SocialLink href='/'>
             <Image width={20} height={20} src='/icons/social/instagram.svg' alt='Instagram' />
           </SocialLink>
+          <SocialLink href='https://t.me/cherryswapCommunity'>
+            <Image width={20} height={20} src='/icons/social/telegram.svg' alt='Telegram' />
+          </SocialLink>
         </MobileSocialLinks>
         <LinksContainer>
           <Link href='/'>
@@ -251,7 +256,7 @@ const Footer: React.FC = () => {
           </Link>
         </LinksContainer>
         <MobileDivider />
-        <Copyright>Copyright © 2022 Cherry Swap. All rights reserved.</Copyright>
+        <Copyright>Copyright © 2023 Cherry Swap. All rights reserved.</Copyright>
       </InnerContainer>
     </Wrapper>
   )
